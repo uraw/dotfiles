@@ -1,0 +1,22 @@
+[user]
+    name = uraw
+    email = uraw@urgy.net
+
+[core]
+    editor = /usr/local/bin/emacsclient -t -nw
+    pager=less -FRSX
+
+[color]
+    ui = true
+
+[alias]
+    graph = log --graph --decorate=short --all --format=short
+    g     = log --graph --decorate=short --all --format=short
+
+    sgraph = log --graph --decorate=short --all --oneline
+    sg     = log --graph --decorate=short --all --oneline
+
+    logx = log --decorate=short
+
+[push]
+    default = matching
