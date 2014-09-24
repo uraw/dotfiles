@@ -1,0 +1,13 @@
+### Manual
+
+init-loader.el
+ac-comphist.dat
+.DS_Store
+*~
+*.swp
+*~
+\#*\#
+*.elc
+auto-save-list
+.\#*
+emacs/.emacs.d/elpa/
