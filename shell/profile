@@ -1,0 +1,82 @@
+# -*- coding:utf-8 mode:shell-script -*-
+
+zsh_path=`which zsh`
+bash_path=`which bash`
+
+################################################################################
+## enviroment variables
+# general
+export LESS='-R --LONG-PROMPT -i'
+if [ -e /usr/share/source-highlight/src-hilite-lesspipe.sh ]; then
+    export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
+fi
+export EDITOR='`emacsclient` -t -nw'
+export PATH=~/bin:$PATH
+
+# Environment Additional
+if [ -e ~/.additional_profile ]; then
+    source ~/.additional_profile
+fi
+
+################################################################################
+## History
+
+if [ "$SHELL" = $zsh_path ]; then
+    # http://qiita.com/syui/items/c1a1567b2b76051f50c4
+    setopt hist_ignore_dups
+    setopt EXTENDED_HISTORY
+    setopt hist_ignore_space # ignore a command line that begins with space
+    setopt hist_reduce_blanks # reduce unnecessary blanks
+
+    # http://myfuturesightforpast.blogspot.jp/2014/05/zshcdtab.html
+    unsetopt cdablevars
+
+    # http://qiita.com/kenjiskywalker/items/13d150c590508d518d26
+    zstyle ':completion:*:default' menu select=1
+elif [ "$SHELL" = $bash_path ]; then
+    # export HISTCONTROL=ignoredups
+    export HISTCONTROL=ignorespace # Do not collect the command which has a space at its head.
+    export HISTCONTROL=ignoreboth  # Do not put duplicate lines in the history.
+    export HISTIGNORE="fg:bg:tdr*:udr:ddr:uk:dk:dotz:toolz:ls:history:cd:jman*:ll"
+    export LD_LIBRARY_PATH='/usr/local/lib'
+fi
+
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+
+################################################################################
+## Aliases
+# general
+alias emacs='emacsclient -t -nw'
+alias cp='cp -v'
+alias mv='mv -v'
+alias ls='ls -F --color=auto'
+alias ll='ls -l'
+alias jman='LANG=ja_JP.utf8 man'
+
+################################################################################
+# git-completion
+if [ "$SHELL" = $bash_path ]; then
+    source /etc/bash_completion
+    source ~/.git-completion.sh
+    source ~/gitrepos/android-completion/android
+fi
+
+################################################################################
+## PROMPT
+if [ "$SHELL" = $bash_path ]; then
+    if [ $TERM == screen ]; then
+        # http://d.hatena.ne.jp/sxhxtxa/20120926/1348675457
+        # \[\033k\033\\\] is needed for GNU screen's shelltitle
+        export PS1='\[\033k\033\\\]\[\033[0;35m\][@\h \t \w]\[\033[0m\] `git-dirty`\n\$ '
+    else
+        export PS1='\[\033[0;35m\][@\h \t \w]\[\033[0m\] `git-dirty`\n\$ '
+    fi
+fi
+
+
+################################################################################
+# Emacs
+if [ ! pgrep emacs >/dev/null 2>&1 ]; then
+    `\emacs --daemon`
+fi
