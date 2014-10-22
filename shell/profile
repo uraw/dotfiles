@@ -12,6 +12,8 @@ if [ -e /usr/share/source-highlight/src-hilite-lesspipe.sh ]; then
 fi
 export EDITOR='`emacsclient` -t -nw'
 export PATH=~/bin:$PATH
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
 
 # Environment Additional
 if [ -e ~/.additional_profile ]; then
