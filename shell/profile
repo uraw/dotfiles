@@ -1,6 +1,6 @@
 # -*- coding:utf-8 mode:shell-script -*-
 
-zsh_path=`which zsh`
+export zsh_path=`which zsh`
 bash_path=`which bash`
 
 ################################################################################
