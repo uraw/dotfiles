@@ -52,9 +52,14 @@ export SAVEHIST=1000000
 alias emacs='emacsclient -t -nw'
 alias cp='cp -v'
 alias mv='mv -v'
-alias ls='ls -F --color=auto'
+if [ Darwin = `uname` ]; then # it's OSX!
+    alias ls='ls -F -G'
+else
+    alias ls='ls -F --color=auto'
+fi
 alias ll='ls -l'
 alias jman='LANG=ja_JP.utf8 man'
+alias diff='git diff'
 
 ################################################################################
 # git-completion
@@ -79,6 +84,8 @@ fi
 
 ################################################################################
 # Emacs
-if [ ! `pgrep emacs --daemon` ]; then
+if [ ! `pgrep -x emacs --daemon` ]; then
     \emacs --daemon 2> /dev/null
 fi
+
+################################################################################
