@@ -18,5 +18,7 @@
 
     logx = log --decorate=short
 
+    co = checkout
+
 [push]
     default = matching
