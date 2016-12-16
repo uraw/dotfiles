@@ -5,6 +5,7 @@
 [core]
     editor = /usr/local/bin/emacsclient -t -nw
     pager = less -FRSX
+    autocrlf = input
 
 [color]
     ui = true
@@ -21,7 +22,10 @@
     co = checkout
 
 [push]
-    default = matching
+    default = simple
 
 [init]
     templatedir = ~/.git_template
+
+[diff]
+    algorithm = histogram
