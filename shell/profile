@@ -70,19 +70,6 @@ if [ "$SHELL" = $bash_path ]; then
 fi
 
 ################################################################################
-## PROMPT
-if [ "$SHELL" = $bash_path ]; then
-    if [ $TERM == screen ]; then
-        # http://d.hatena.ne.jp/sxhxtxa/20120926/1348675457
-        # \[\033k\033\\\] is needed for GNU screen's shelltitle
-        export PS1='\[\033k\033\\\]\[\033[0;35m\][@\h \t \w]\[\033[0m\] `git-dirty`\n\$ '
-    else
-        export PS1='\[\033[0;35m\][@\h \t \w]\[\033[0m\] `git-dirty`\n\$ '
-    fi
-fi
-
-
-################################################################################
 # Emacs
 if [ ! `pgrep -xi emacs --daemon` ]; then
     \emacs --daemon 2> /dev/null
