@@ -40,3 +40,7 @@
 	    (setq indent-tabs-mode nil)
 	    (define-key (current-local-map) "\C-h" 'python-backspace)
 	    ))
+
+;;; magit-status
+;;; https://magit.vc/manual/magit.html#Getting-Started
+(global-set-key (kbd "C-x g") 'magit-status)

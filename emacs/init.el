@@ -40,7 +40,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (bind-key ruby-electric ruby-block popwin markdown-mode init-loader haml-mode fuzzy-format auto-install auto-complete))))
+    (magit bind-key ruby-electric ruby-block popwin markdown-mode init-loader haml-mode fuzzy-format auto-install auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
