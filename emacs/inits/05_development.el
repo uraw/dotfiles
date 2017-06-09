@@ -44,3 +44,12 @@
 ;;; magit-status
 ;;; https://magit.vc/manual/magit.html#Getting-Started
 (global-set-key (kbd "C-x g") 'magit-status)
+
+;;; Set ipython as python shell interpreter
+;;; https://stackoverflow.com/questions/17817019/how-to-open-ipython-interpreter-in-emacs
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython")
+  (setq python-shell-interpreter-args "-i")
+  (setenv "IPY_TEST_SIMPLE_PROMPT" "1")
+  )
+
