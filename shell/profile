@@ -71,7 +71,7 @@ fi
 
 ################################################################################
 # Emacs
-if [ ! `pgrep -xi emacs --daemon` ]; then
+if [ -z "`pgrep -xi emacs --daemon`" ]; then
     \emacs --daemon 2> /dev/null
 fi
 
