@@ -1,0 +1,38 @@
+# -*- mode: conf-unix -*-
+
+[user]
+    name = uraw
+    email = uraw@urgy.net
+
+[alias]
+    g   = log --graph --format=format:'%C(blue bold)%h%C(reset) %C(cyan bold)%ai%C(reset) %C(green bold)(%ar)%C(reset)%C(yellow bold)%d%C(reset)%n''    %C(white)%s%C(reset) %C(dim white)- %an <%aE>%C(reset)'
+    ga  = !"git g --all"
+    sgraph = log --graph --decorate=short --all --oneline
+    sg     = log --graph --decorate=short --all --oneline
+    logx = log --decorate=short
+    co = checkout
+
+[url "git@github.com:"]
+    pushinsteadof = https://github.com/
+
+[include]
+    path = ~/.gitconfig.local
+
+[core]
+    editor = /usr/local/bin/emacsclient -t -nw
+    pager = less -FRSX
+    autocrlf = input
+
+[color]
+	ui = auto
+
+[diff]
+    indentHeuristic = true
+    algorithm = histogram
+
+[push]
+    default = simple
+
+[init]
+    templatedir = ~/.git_template
+
