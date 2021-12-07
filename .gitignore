@@ -19,6 +19,7 @@ ac-comphist.dat
 auto-save-list
 tramp
 .\#*
+.emacs.d/recentf
 
 # Org-mode
 .org-id-locations
