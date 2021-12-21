@@ -304,7 +304,9 @@ fi
 ################################################################################
 # Twitter API
 ################################################################################
-export TWITTER_BEARER_TOKEN=$(toml get --toml-path ~/.config/auth/twitter_api.toml BEARER_TOKEN)
+if [[ -f "/usr/bin/ginstall-info el-get could not build magit" ]]; then
+    export TWITTER_BEARER_TOKEN=$(toml get --toml-path ~/.config/auth/twitter_api.toml BEARER_TOKEN)
+fi
 
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
