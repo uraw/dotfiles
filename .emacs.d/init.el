@@ -1,21 +1,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; el-get
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; https://github.com/dimitri/el-get
-;; Requirements
-;; - Install el-get first
-;;    git clone https://github.com/dimitri/el-get.git ~/.emacs.d/el-get/el-get
-
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-;(package-initialize)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; el-get
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
 
 ;; Install el-get if not installed
@@ -70,11 +55,6 @@
     ;; https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
     (setq flycheck-python-flake8-executable "flake8")))
-
-(el-get-bundle flycheck-mypy
-  :url "https://raw.githubusercontent.com/lbolla/emacs-flycheck-mypy/master/flycheck-mypy.el"
-  (require 'flycheck-mypy)
-  (add-hook 'python-mode-hook 'flycheck-mode))
 
 (el-get-bundle go-mode)
 
@@ -188,10 +168,6 @@ translation it is possible to get suggestion."
 (el-get-bundle rust-mode)
 
 (el-get-bundle toml-mode)
-
-(el-get-bundle m4-mode
-  :url "https://raw.githubusercontent.com/jwiegley/emacs-release/master/lisp/progmodes/m4-mode.el"
-  (require 'm4-mode))
 
 (el-get-bundle crontab-mode)
 
