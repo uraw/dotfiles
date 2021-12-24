@@ -270,14 +270,17 @@ fi
 ################################################################################
 export EDITOR="emacsclient -t"
 function emacs() {
-    if [[ 0 -eq $(ps ax | grep emacs | grep daemon | wc -l) ]]; then
-        $(whereis emacs | tr ' ' '\n' | grep bin) --daemon > /dev/null 2>&1
+    if [[ 0 -eq $(pgrep -ax emacs | grep daemon | wc -l) ]]; then
+        echo Starting emacs daemon...
+        $(whereis emacs | tr ' ' '\n' | grep bin | head -n 1) --daemon
+        echo Done
+        sleep 0.3
     fi
     emacsclient -t $@
 }
 
 function kill-emacs() {
-    if [[ 0 -ne $(ps ax | grep emacs | grep daemon | wc -l) ]]; then
+    if [[ 0 -ne $(pgrep -ax emacs | grep daemon | wc -l) ]]; then
         emacsclient -e '(kill-emacs)'
     fi
 }
