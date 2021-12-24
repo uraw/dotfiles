@@ -190,7 +190,7 @@ fi
 # Environments
 ################################################################################
 export LESS='-R'  # R: ANSI color
-export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 export CPUNUM=$(grep -c ^processor /proc/cpuinfo)
 
 
