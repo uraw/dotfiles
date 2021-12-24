@@ -156,6 +156,7 @@ translation it is possible to get suggestion."
   (global-set-key (kbd "C-x a") 'helm-ag))
 
 (el-get-bundle magit
+  :info nil
   (global-set-key (kbd "C-x g") 'magit-status))
 
 (el-get-bundle markdown-mode
