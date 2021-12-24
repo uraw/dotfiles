@@ -1,3 +1,7 @@
+.emacs.d/*
+!.emacs.d/init.el
+
+
 ### Manual
 
 ac-comphist.dat
