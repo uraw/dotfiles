@@ -307,7 +307,7 @@ fi
 ################################################################################
 # Twitter API
 ################################################################################
-if [[ -f "/usr/bin/ginstall-info el-get could not build magit" ]]; then
+if [[ -f "~/.config/auth/twitter_api.toml" ]]; then
     export TWITTER_BEARER_TOKEN=$(toml get --toml-path ~/.config/auth/twitter_api.toml BEARER_TOKEN)
 fi
 
