@@ -212,9 +212,7 @@ translation it is possible to get suggestion."
 
 (el-get-bundle elpa:edit-indirect) ;; For code block in markdown-mode
 
-(el-get-bundle discover-my-major
-  :type git
-  :url "https://framagit.org/steckerhalter/discover-my-major/"
+(el-get-bundle jguenther/discover-my-major
   (global-set-key (kbd "<help> C-m") 'discover-my-major))
 
 (el-get-bundle elpy
