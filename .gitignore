@@ -1,6 +1,9 @@
 .emacs.d/*
 !.emacs.d/init.el
 
+.ipython
+!.ipython/profile_default/ipython_config.py
+
 
 ### Manual
 
