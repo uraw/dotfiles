@@ -252,9 +252,8 @@ fi
 ################################################################################
 # Golang
 ################################################################################
-# https://zenn.dev/tennashi/articles/3b87a8d924bc9c43573e
-export GOBIN="${HOME}/.local/bin/"
-export GOMODCACHE="${HOME}/.cache/go_mod"
+export GOPATH="${HOME}/dev/go"
+export PATH="${GOPATH}/bin:${PATH}:/usr/local/go/bin"
 
 
 ################################################################################
