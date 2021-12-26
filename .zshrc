@@ -115,18 +115,6 @@ alias OD='od -v -tx1z -Ax'
 
 
 ################################################################################
-# source-highlight
-################################################################################
-if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
-    export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
-    export LESS=' -R '
-#    function hless() {
-#        /usr/share/source-highlight/src-hilite-lesspipe.sh $1 | less -R
-#    }
-fi
-
-
-################################################################################
 # Search file by name simply
 ################################################################################
 alias findf='find . -name '
