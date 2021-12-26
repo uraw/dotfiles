@@ -153,9 +153,10 @@ fi
 ################################################################################
 # fzf
 ################################################################################
-# Inspired from https://qiita.com/b4b4r07/items/ba095411eb97cb8dc08e
 if [[ -d ${HOME}/.fzf ]]; then
-    [[ -f ${HOME}/.fzf.zsh ]] && source ${HOME}/.fzf.zsh
+    if [[ -f ${HOME}/.fzf.zsh ]]; then
+        source ${HOME}/.fzf.zsh
+    fi
 
     export FZF_TMUX=1
     export FZF_TMUX_HEIGHT=30
