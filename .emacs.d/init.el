@@ -214,6 +214,10 @@ translation it is possible to get suggestion."
   :type git
   :url "https://github.com/charje/arm-mode")
 
+(el-get-bundle color-theme-solarized
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-solarized")
+  (load-theme 'solarized t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; recentf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
