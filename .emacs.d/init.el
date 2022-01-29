@@ -54,6 +54,8 @@
   (with-eval-after-load-feature 'flycheck
     ;; https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+
+    ;; Check for python user 'flake8'
     (setq flycheck-python-flake8-executable "flake8")))
 
 (el-get-bundle go-mode)
