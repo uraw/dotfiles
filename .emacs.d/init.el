@@ -220,6 +220,12 @@ translation it is possible to get suggestion."
   (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-solarized")
   (load-theme 'solarized t))
 
+(el-get-bundle mwim
+  :type git
+  :url "https://github.com/alezost/mwim.el"
+  (global-set-key (kbd "C-a") 'mwim-beginning)
+  (global-set-key (kbd "C-e") 'mwim-end))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; recentf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
