@@ -229,6 +229,10 @@ translation it is possible to get suggestion."
 (el-get-bundle py-isort
   (add-hook 'before-save-hook 'py-isort-before-save))
 
+(el-get-bundle yasnippet
+  (require 'yasnippet)
+  (yas-global-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; recentf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
