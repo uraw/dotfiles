@@ -226,6 +226,9 @@ translation it is possible to get suggestion."
   (global-set-key (kbd "C-a") 'mwim-beginning)
   (global-set-key (kbd "C-e") 'mwim-end))
 
+(el-get-bundle py-isort
+  (add-hook 'before-save-hook 'py-isort-before-save))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; recentf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
