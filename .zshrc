@@ -276,20 +276,30 @@ fi
 ################################################################################
 # Emacs
 ################################################################################
-export EDITOR="emacsclient -t"
+export EDITOR="emacs -nw"
 function emacs() {
-    if [[ 0 -eq $(pgrep -ax emacs | grep daemon | wc -l) ]]; then
-        echo Starting emacs daemon...
-        $(whereis emacs | tr ' ' '\n' | grep bin | head -n 1) --daemon
-        echo Done
-        sleep 0.3
-    fi
+    start-emacs
+    sleep 0.3
     emacsclient -t $@
 }
 
+function start-emacs() {
+    if [[ 0 -eq $(ps aux | grep -i emacs | grep daemon | wc -l) ]]; then
+        echo Starting emacs daemon
+        $(whereis emacs | tr ' ' '\n' | grep bin | head -n 1) --daemon
+        echo Done
+    else
+        echo Daemon already started
+    fi
+}
+
 function kill-emacs() {
-    if [[ 0 -ne $(pgrep -ax emacs | grep daemon | wc -l) ]]; then
+    if [[ 0 -ne $(ps aux | grep -i emacs | grep daemon | wc -l) ]]; then
+        echo Killing emacs daemon
         emacsclient -e '(kill-emacs)'
+        echo Done
+    else
+        echo No daemon started
     fi
 }
 
