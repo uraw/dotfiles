@@ -89,8 +89,14 @@ function prompt-git-current-branch() {
   echo "%F${status_color}[${branch_name}]%f"
 }
 
+function python-venv-name() {
+    if [ -n "${VIRTUAL_ENV}" ]; then
+        echo " %F{yellow}<venv:$(basename ${VIRTUAL_ENV})>%f"
+    fi
+}
+
 prompt () {
-    PROMPT="%K{031}%n@%m%k %F{cyan}[%*]%f %B%F{cyan}%~%f%b `prompt-git-current-branch`
+    PROMPT="%K{031}%n@%m%k %F{cyan}[%*]%f %B%F{cyan}%~%f%b$(python-venv-name)$(prompt-git-current-branch)
 %F{white}%# %f"
 }
 precmd_functions+=(prompt)
