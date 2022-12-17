@@ -16,7 +16,7 @@
     path = ~/.gitconfig.local
 
 [core]
-    editor = /usr/local/bin/emacsclient -t -nw
+    editor = emacsclient -t -nw
     pager = less -FRSX
     autocrlf = input
 
