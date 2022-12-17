@@ -1,5 +1,6 @@
-autoload -Uz colors   && colors
-autoload -Uz compinit && compinit
+autoload -Uz colors   && colors  # For easy color scheme setting
+autoload -Uz compinit && compinit  # For complition
+
 ################################################################################
 # brew
 ################################################################################
