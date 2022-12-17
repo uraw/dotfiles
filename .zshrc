@@ -1,5 +1,13 @@
 autoload -Uz colors   && colors
 autoload -Uz compinit && compinit
+################################################################################
+# brew
+################################################################################
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+
 
 ################################################################################
 # Completion
@@ -10,7 +18,14 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
+case ${OSTYPE} in
+    linux*)
+        eval "$(dircolors -b)"
+        ;;
+    darwin*)
+        eval "$(gdircolors -b)"
+        ;;
+esac
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
@@ -180,7 +195,14 @@ fi
 ################################################################################
 export LESS='-R'  # R: ANSI color
 export PATH="${HOME}/.local/bin:${PATH}"
-export CPUNUM=$(grep -c ^processor /proc/cpuinfo)
+case ${OSTYPE} in
+    linux*)
+        export CPUNUM=$(grep -c ^processor /proc/cpuinfo)
+        ;;
+    darwin*)
+        export CPUNUM=$(sysctl -a machdep.cpu | grep core_count | cut -d ' ' -f 2)
+        ;;
+esac
 
 
 ################################################################################
