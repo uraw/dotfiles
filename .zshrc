@@ -199,14 +199,6 @@ fi
 ################################################################################
 export LESS='-R'  # R: ANSI color
 export PATH="${HOME}/.local/bin:${PATH}"
-case ${OSTYPE} in
-    linux*)
-        export CPUNUM=$(grep -c ^processor /proc/cpuinfo)
-        ;;
-    darwin*)
-        export CPUNUM=$(sysctl -a machdep.cpu | grep core_count | cut -d ' ' -f 2)
-        ;;
-esac
 
 
 ################################################################################
