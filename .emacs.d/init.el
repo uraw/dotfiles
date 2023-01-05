@@ -341,8 +341,7 @@ translation it is possible to get suggestion."
  '(markdown-header-face-5 ((t (:foreground "color-219" :weight bold :height 1.0))))
  '(markdown-header-face-6 ((t (:foreground "color-244" :weight bold))))
  '(markdown-list-face ((t (:foreground "color-135"))))
- '(mode-line ((t (:background "color-153" :foreground "black" :box (:line-width -1 :style released-button)))))
- '(mode-line-inactive ((t (:inherit mode-line :background "grey30" :foreground "color-243" :box (:line-width -1 :color "grey40") :weight light)))))
+)
 
 ;; Hilight current line
 ;; http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035
