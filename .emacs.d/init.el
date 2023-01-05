@@ -191,6 +191,24 @@ translation it is possible to get suggestion."
     (setq plantuml-java-options "")
     (setq plantuml-options "-charset UTF-8")))
 
+(el-get-bundle elpy
+  (elpy-enable)
+  (with-eval-after-load-feature 'elpy
+    (setq python-shell-interpreter "ipython3")
+    (setq python-shell-interpreter-args "-i")
+    (setq elpy-rpc-python-command "python3")
+    (setq python-check-command "pflake8")
+    (custom-set-variables
+     '(elpy-modules
+       (quote
+        (elpy-module-company
+         elpy-module-eldoc
+         elpy-module-flymake
+         elpy-module-folding
+         elpy-module-pyvenv
+         elpy-module-django
+         elpy-module-sane-defaults))))))
+
 (el-get-bundle elpa:edit-indirect) ;; For code block in markdown-mode
 
 (el-get-bundle jguenther/discover-my-major
