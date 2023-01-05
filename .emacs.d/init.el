@@ -215,9 +215,13 @@ translation it is possible to get suggestion."
   :type git
   :url "https://github.com/charje/arm-mode")
 
-(el-get-bundle color-theme-solarized
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-solarized")
-  (load-theme 'solarized t))
+;(el-get-bundle color-theme-solarized
+;  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-solarized")
+;  (load-theme 'solarized t))
+
+(el-get-bundle color-theme-railscasts
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-railscasts")
+  (load-theme 'railscast t))
 
 (el-get-bundle mwim
   :type git
