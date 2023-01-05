@@ -235,24 +235,6 @@ if (( $+commands[deepl] )); then
 fi
 
 
-
-################################################################################
-# Fix SSH_AUTH_SOCK for tmux
-################################################################################
-# To prevent SSH passphrase input on every new tmux pane
-# cf. http://www.gcd.org/blog/2006/09/100/
-# cf. https://qiita.com/isaoshimizu/items/84ac5a0b1d42b9d355cf
-agent="${HOME}/tmp/ssh-agent-${USER}"
-if [[ -S "${SSH_AUTH_SOCK}" ]]; then
-    case "${SSH_AUTH_SOCK}" in
-        /tmp/*/agent.[0-9]*)
-            ln -snf "${SSH_AUTH_SOCK}" "${agent}" && export SSH_AUTH_SOCK="${agent}"
-    esac
-elif [[ -S "${agent}" ]]; then
-    export SSH_AUTH_SOCK="${agent}"
-fi
-
-
 ################################################################################
 # mattn/memo
 ################################################################################
