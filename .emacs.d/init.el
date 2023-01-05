@@ -363,6 +363,11 @@ translation it is possible to get suggestion."
   (put 'upcase-region 'disabled nil)
   (put 'downcase-region 'disabled nil))
 
+(when (equal system-type 'darwin)
+  (set-face-attribute 'default nil
+                      :height 160
+                      :family "Monaco"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Control
