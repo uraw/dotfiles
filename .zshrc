@@ -172,11 +172,7 @@ fi
 ################################################################################
 # fzf
 ################################################################################
-if [[ -d ${HOME}/.fzf ]]; then
-    if [[ -f ${HOME}/.fzf.zsh ]]; then
-        source ${HOME}/.fzf.zsh
-    fi
-
+if (( $+commands[fzf] )); then
     export FZF_TMUX=1
     export FZF_TMUX_HEIGHT=30
     export FZF_DEFAULT_OPTS="--no-mouse --ansi --reverse --height 50% --multi"
@@ -243,6 +239,7 @@ fi
 ################################################################################
 # Fix SSH_AUTH_SOCK for tmux
 ################################################################################
+# To prevent SSH passphrase input on every new tmux pane
 # cf. http://www.gcd.org/blog/2006/09/100/
 # cf. https://qiita.com/isaoshimizu/items/84ac5a0b1d42b9d355cf
 agent="${HOME}/tmp/ssh-agent-${USER}"
