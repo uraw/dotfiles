@@ -308,8 +308,8 @@ fi
 ################################################################################
 # Android
 ################################################################################
-export PATH="${PATH}:${HOME}/tools/platform-tools"
-export PATH="${PATH}:${HOME}/tools/android-ndk-r16b"
+export PATH=/opt/android-sdk/cmdline-tools/latest/bin:${PATH}
+export ANDROID_SDK_ROOT=/opt/android-sdk
 
 
 ################################################################################
