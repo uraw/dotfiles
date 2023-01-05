@@ -12,6 +12,9 @@ install:
 	@mkdir -p ~/.config/fish
 	@ln -sfnv $(abspath .config/fish/config.fish) ~/.config/fish/config.fish
 
+	@mkdir -p ~/.ipython
+	@ln -sfnv $(abspath ipython_config.py) ~/.ipython/profile_default/
+
 clean:
 	@echo 'Remove installed dot files...'
 	@-$(foreach dotfile, $(DOTFILES), rm -vrf $(HOME)/$(dotfile);)
