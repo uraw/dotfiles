@@ -145,7 +145,10 @@ translation it is possible to get suggestion."
   (global-set-key (kbd "C-c m") 'markdown-mode)
   ;; enable syntax highlight in code block
   (with-eval-after-load-feature 'markdown-mode
-    (setq markdown-fontify-code-blocks-natively t)))
+    (setq markdown-fontify-code-blocks-natively t))
+  (add-hook 'markdown-mode-hook
+            (lambda () (company-mode -1))) ;; disable company-mode on markdown-mode
+  )
 
 (el-get-bundle popwin
   (require 'popwin)
