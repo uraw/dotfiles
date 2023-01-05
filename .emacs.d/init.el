@@ -238,6 +238,12 @@ translation it is possible to get suggestion."
 
 (el-get-bundle fish-mode)
 
+(el-get-bundle ndmacro
+  :type git
+  :url "https://github.com/snj14/ndmacro.el"
+  (require 'ndmacro)
+  (global-set-key (kbd "C-]") 'ndmacro))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
