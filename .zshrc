@@ -332,6 +332,6 @@ fi
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
 ################################################################################
-if [[ -f "${HOME}/.zshrc_local" ]]; then
-    source "${HOME}/.zshrc_local"
+if [[ -f "${HOME}/.zshrc.local" ]]; then
+    source "${HOME}/.zshrc.local"
 fi
