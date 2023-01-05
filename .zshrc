@@ -298,11 +298,7 @@ export ANDROID_SDK_ROOT=/opt/android-sdk
 
 
 ################################################################################
-# Twitter API
 ################################################################################
-if [[ -f "~/.config/auth/twitter_api.toml" ]]; then
-    export TWITTER_BEARER_TOKEN=$(toml get --toml-path ~/.config/auth/twitter_api.toml BEARER_TOKEN)
-fi
 
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
