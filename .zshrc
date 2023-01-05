@@ -298,7 +298,12 @@ export ANDROID_SDK_ROOT=/opt/android-sdk
 
 
 ################################################################################
+# pyenv
 ################################################################################
+export PYENV_ROOT="${HOME}/.pyenv"
+command -v pyenv > /dev/null || export PATH="${PYENV_ROOT}/bin:${PATH}"
+eval "$(pyenv init -)"
+
 
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
