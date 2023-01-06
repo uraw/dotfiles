@@ -18,8 +18,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (el-get-bundle with-eval-after-load-feature) ;; https://tarao.hatenablog.com/entry/20150221/1424518030
 
-(el-get-bundle ag)
-
 (el-get-bundle company-mode
   ;; https://github.com/company-mode/company-mode/issues/227
   ;; https://tarao.hatenablog.com/entry/20150221/1424518030#tips-byte-compilation
@@ -133,9 +131,6 @@ translation it is possible to get suggestion."
   (add-hook 'python-mode-hook 'helm-gtags-mode)
   (add-hook 'ruby-mode-hook 'helm-gtags-mode)
   (add-hook 'asm-mode-hook 'helm-gtags-mode))
-
-(el-get-bundle helm-ag
-  (global-set-key (kbd "C-x a") 'helm-ag))
 
 (el-get-bundle magit
   :info nil
@@ -265,6 +260,12 @@ translation it is possible to get suggestion."
   :url "https://github.com/snj14/ndmacro.el"
   (require 'ndmacro)
   (global-set-key (kbd "C-]") 'ndmacro))
+
+(el-get-bundle helm-rg
+  (global-set-key (kbd "C-x a") 'helm-rg))
+
+
+(el-get 'sync)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  environment
