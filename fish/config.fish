@@ -93,22 +93,6 @@ end
 
 
 ################################################################################
-# Fix SSH_AUTH_SOCK for tmux
-################################################################################
-# cf. http://www.gcd.org/blog/2006/09/100/
-# cf. https://qiita.com/isaoshimizu/items/84ac5a0b1d42b9d355cf
-set agent ~/.ssh-agent-$USER
-if test -S "{$SSH_AUTH_SOCK}"
-    switch {$SSH_AUTH_SOCK}
-    case /tmp/*/agent.[0-9]*
-        ln -snf "{$SSH_AUTH_SOCK}" "{$agent}" && export SSH_AUTH_SOCK=$agent
-    end
-else if test -S $agent
-    set -Ux SSH_AUTH_SOCK $agent
-end
-
-
-################################################################################
 # mattn/memo
 ################################################################################
 # https://teratail.com/questions/36536
@@ -186,6 +170,6 @@ end
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
 ################################################################################
-if test -f ~/.zshrc_local
-    source ~/.zshrc_local
+if test -f ~/.config/fish/config.fish.local
+    source ~/.config/fish/config.fish.local
 end
