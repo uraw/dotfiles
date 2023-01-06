@@ -8,29 +8,29 @@ install: emacs fish git python tmux vim zsh
 
 emacs:
 	@mkdir -p ~/.emacs.d
-	@ln -sfnv $(abspath emacs/init.el) ~/.emacs.d/init.el
+	@ln -sfnv $(abspath emacs/init.el) ~/.emacs.d/
 
 fish:
 	@mkdir -p ~/.config/fish
-	@ln -sfnv $(abspath fish/config.fish) ~/.config/fish/config.fish
+	@ln -sfnv $(abspath fish/config.fish)            ~/.config/fish/
 
 git:
-	@ln -sfnv $(abspath git/.gitconfig) ~/.gitconfig
+	@ln -sfnv $(abspath git/.gitconfig) ~/
 
 python:
-	@ln -sfnv $(abspath python/.flake8) ~/.flake8
 	@mkdir -p ~/.ipython/profile_default
-	@ln -sfnv $(abspath ipython_config.py) ~/.ipython/profile_default/ipython_config.py
+	@ln -sfnv $(abspath ipython_config.py) ~/.ipython/profile_default
+	@ln -sfnv $(abspath python/.flake8)    ~/
 
 tmux:
-	@ln -sfnv $(abspath tmux/.tmux.conf) ~/.tmux.conf
+	@ln -sfnv $(abspath tmux/.tmux.conf) ~/
 
 vim:
-	@ln -sfnv $(abspath vim/.vimrc) ~/.vimrc
+	@ln -sfnv $(abspath vim/.vimrc) ~/
 
 zsh:
-	@ln -sfnv $(abspath zsh/.zshrc) ~/.zshrc
-	@ln -sfnv $(abspath zsh/.zlogin) ~/.zlogin
+	@ln -sfnv $(abspath zsh/.zshrc)  ~/
+	@ln -sfnv $(abspath zsh/.zlogin) ~/
 
 uninstall:
 	@echo 'Remove installed dot files...'
