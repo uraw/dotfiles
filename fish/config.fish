@@ -9,11 +9,6 @@ if status is-interactive
     end
 end
 
-################################################################################
-# pyenv
-################################################################################
-set -Ux PYENV_ROOT ~/.pyenv
-fish_add_path $PYENV_ROOT/bin
 
 ################################################################################
 # Language
@@ -131,7 +126,7 @@ function kill-emacs
     end
 end
 
-function restart-emacs
+function remacs
     kill-emacs && emacs
 end
 
@@ -147,16 +142,16 @@ end
 ################################################################################
 # Android
 ################################################################################
-fish_add_path ~/tools/platform-tools
-fish_add_path ~/tools/android-ndk-r16b
+fish_add_path /opt/android-sdk/cmdline-tools/latest/bin
+set -Ux ANDROID_SDK_ROOT /opt/android-sdk
+
 
 
 ################################################################################
-# Rust
+# pyenv
 ################################################################################
-if test -d ~/.cargo
-    fish_add_path ~/.cargo/bin
-end
+set -Ux PYENV_ROOT ~/.pyenv
+fish_add_path $PYENV_ROOT/bin
 
 
 ################################################################################
