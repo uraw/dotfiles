@@ -128,7 +128,7 @@ function histall() { history -E 1 }
 ################################################################################
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
-
+stty stop undef  # Disable tty stop by Ctrl-S
 
 ################################################################################
 # Aliases
