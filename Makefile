@@ -11,8 +11,10 @@ emacs:
 	@ln -sfnv $(abspath emacs/init.el) ~/.emacs.d/
 
 fish:
-	@mkdir -p ~/.config/fish
+	@mkdir -p ~/.config/fish/functions
 	@ln -sfnv $(abspath fish/config.fish)            ~/.config/fish/
+	@ln -sfnv $(abspath fish/fish_prompt.fish)       ~/.config/fish/functions/
+	@ln -sfnv $(abspath fish/fish_right_prompt.fish) ~/.config/fish/functions/
 
 git:
 	@ln -sfnv $(abspath git/.gitconfig) ~/
