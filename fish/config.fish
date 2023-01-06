@@ -158,14 +158,6 @@ if test -d ~/.cargo
     fish_add_path ~/.cargo/bin
 end
 
-################################################################################
-# Twitter API
-################################################################################
-if test -f ~/.config/auth/twitter_api.toml
-    if command -sq toml
-        set -Ux TWITTER_BEARER_TOKEN (toml get --toml-path ~/.config/auth/twitter_api.toml BEARER_TOKEN)
-    end
-end
 
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
