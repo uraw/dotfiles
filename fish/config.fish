@@ -60,14 +60,10 @@ function __auto_activate_venv --on-variable PWD --description "Activate/Deactiva
 
     # If venv is not activated or a different venv is activated and venv exist.
     if test "$VIRTUAL_ENV" != "$gitdir/.venv" -a -e "$gitdir/.venv/bin/activate.fish"
-        echo Activated
         source $gitdir/.venv/bin/activate.fish
         # If venv activated but the current (git) dir has no venv.
     else if not test -z "$VIRTUAL_ENV" -o -e "$gitdir/.venv"
-        echo Deactivated
         deactivate
-    else
-        echo Nothing
     end
 end
 
