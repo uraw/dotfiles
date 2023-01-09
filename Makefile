@@ -12,10 +12,9 @@ emacs:
 
 fish:
 	@mkdir -p ~/.config/fish/functions
-	@ln -sfnv $(abspath fish/config.fish)             ~/.config/fish/
-	@ln -sfnv $(abspath fish/fish_prompt.fish)        ~/.config/fish/functions/
-	@ln -sfnv $(abspath fish/fish_right_prompt.fish)  ~/.config/fish/functions/
-	@ln -sfnv $(abspath fish/__auto_source_venv.fish) ~/.config/fish/functions/
+	@ln -sfnv $(abspath fish/config.fish)                      ~/.config/fish/
+	@ln -sfnv $(abspath fish/functions/fish_prompt.fish)       ~/.config/fish/functions/
+	@ln -sfnv $(abspath fish/functions/fish_right_prompt.fish) ~/.config/fish/functions/
 
 git:
 	@ln -sfnv $(abspath git/.gitconfig) ~/
@@ -39,9 +38,8 @@ uninstall:
 	@echo 'Remove installed dot files...'
 	@-rm -v ~/.emacs.d/init.el
 	@-rm -v ~/.config/fish/config.fish
-	@-rm -v ~/.config/fish/functions/fish_prompr.fish
-	@-rm -v ~/.config/fish/functions/fish_right_prompr.fish
-	@-rm -v ~/.config/fish/functions/__auto_source_venv.fish
+	@-rm -v ~/.config/fish/functions/fish_prompt.fish
+	@-rm -v ~/.config/fish/functions/fish_right_prompt.fish
 	@-rm -v ~/.gitconfig
 	@-rm -v ~/.flake8
 	@-rm -v ~/.ipython/profile_default/ipython_config.py
