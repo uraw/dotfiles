@@ -56,6 +56,7 @@ set -Ux LC_CTYPE en_US.UTF-8
 # pyenv
 set -Ux PYENV_ROOT ~/.pyenv
 fish_add_path $PYENV_ROOT/bin
+pyenv init - | source
 
 # venv
 # Auto activate and deactivate venv
