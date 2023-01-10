@@ -38,6 +38,9 @@ end
 alias jman 'LANG=ja_JP.utf8 man'
 alias OD 'od -v -tx1z -Ax'
 
+# Suppress greeting message
+set -U fish_greeting ""
+
 
 ################################################################################
 # Locale
