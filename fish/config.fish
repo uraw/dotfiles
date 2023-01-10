@@ -1,9 +1,7 @@
+################################################################################
+# brew
+################################################################################
 if status is-interactive
-    # Commands to run in interactive sessions can go here
-
-    ################################################################################
-    # brew
-    ################################################################################
     if test -e /opt/homebrew/bin/brew
         eval (/opt/homebrew/bin/brew shellenv)
     end
@@ -12,27 +10,24 @@ if status is-interactive
     end
 end
 
-
 ################################################################################
-# Language
+# PATH
 ################################################################################
-set -Ux LANG en_US.UTF-8
-set -Ux LC_CTYPE en_US.UTF-8
+fish_add_path ~/.local/bin
 
 
 ################################################################################
-# History
+# Shell customizing
 ################################################################################
+
+# history
 # https://qiita.com/yoshiori/items/f1c01dd94bb5f0489cf6
 function history-merge --on-event fish_preexec
     history --save
     history --merge
 end
 
-
-################################################################################
 # Aliases
-################################################################################
 alias ls 'ls --color=auto'
 alias ll 'ls -l'
 alias now 'date +%Y-%m-%d--%H-%M-%S'
@@ -45,8 +40,22 @@ alias OD 'od -v -tx1z -Ax'
 
 
 ################################################################################
-# Event handler
+# Locale
 ################################################################################
+set -Ux LANG en_US.UTF-8
+set -Ux LC_CTYPE en_US.UTF-8
+
+
+################################################################################
+# Python
+################################################################################
+
+# pyenv
+set -Ux PYENV_ROOT ~/.pyenv
+fish_add_path $PYENV_ROOT/bin
+
+# venv
+# Auto activate and deactivate venv
 # https://gist.github.com/tommyip/cf9099fa6053e30247e5d0318de2fb9e
 function __auto_activate_venv --on-variable PWD --description "Activate/Deactivate virtualenv on directory change"
     status --is-command-substitution; and return
@@ -65,61 +74,6 @@ function __auto_activate_venv --on-variable PWD --description "Activate/Deactiva
     else if not test -z "$VIRTUAL_ENV" -o -e "$gitdir/.venv"
         deactivate
     end
-end
-
-
-################################################################################
-# fzf
-################################################################################
-if command -sq fzf
-    set -Ux FZF_TMUX 1
-    set -Ux FZF_TMUX_HEIGHT 30
-    set -Ux FZF_DEFAULT_OPTS "--no-mouse --ansi --reverse --height 50% --multi"
-end
-
-################################################################################
-# Other Environments
-################################################################################
-set -Ux LESS '-R'  # R: ANSI color
-fish_add_path ~/.local/bin
-
-
-################################################################################
-# GNU Global
-################################################################################
-set -Ux GTAGSLABEL pygments
-
-
-################################################################################
-# translate-shell
-################################################################################
-if command -sq trans
-    alias ej 'trans en:ja'
-    alias je 'trans ja:en'
-end
-
-################################################################################
-# deepl-cli
-################################################################################
-# https://github.com/eggplants/deepl-cli/
-
-if command -sq deepl
-    function dej
-        echo $argv | deepl en:ja
-    end
-    function dje
-        echo $argv | deepl ja:en
-    end
-end
-
-
-
-################################################################################
-# mattn/memo
-################################################################################
-# https://teratail.com/questions/36536
-if command -sq memo
-    alias m memo
 end
 
 
@@ -159,26 +113,56 @@ end
 
 
 ################################################################################
-# bat
-################################################################################
-if command -sq batcat
-    alias bat batcat
-end
-
-
-################################################################################
 # Android
 ################################################################################
 fish_add_path /opt/android-sdk/cmdline-tools/latest/bin
 set -Ux ANDROID_SDK_ROOT /opt/android-sdk
 
 
+################################################################################
+# Misc. tools
+################################################################################
 
-################################################################################
-# pyenv
-################################################################################
-set -Ux PYENV_ROOT ~/.pyenv
-fish_add_path $PYENV_ROOT/bin
+# fzf
+if command -sq fzf
+    set -Ux FZF_TMUX 1
+    set -Ux FZF_TMUX_HEIGHT 30
+    set -Ux FZF_DEFAULT_OPTS "--no-mouse --ansi --reverse --height 50% --multi"
+end
+
+# GNU Global
+set -Ux GTAGSLABEL pygments
+
+# translate-shell
+if command -sq trans
+    alias ej 'trans en:ja'
+    alias je 'trans ja:en'
+end
+
+# deepl-cli
+# https://github.com/eggplants/deepl-cli/
+if command -sq deepl
+    function dej
+        echo $argv | deepl en:ja
+    end
+    function dje
+        echo $argv | deepl ja:en
+    end
+end
+
+# mattn/memo
+# https://teratail.com/questions/36536
+if command -sq memo
+    alias m memo
+end
+
+# less
+set -Ux LESS '-R'  # R: ANSI color
+
+# bat
+if command -sq batcat
+    alias bat batcat
+end
 
 
 ################################################################################
