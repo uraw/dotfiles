@@ -30,6 +30,7 @@ end
 # Aliases
 alias ls 'ls --color=auto'
 alias ll 'ls -l'
+alias lll 'ls -l -D "%Y-%m-%d %H:%M" | rg -v / | fzf --preview="bat --color=always {-1}" --header-lines=1 --preview-window=down,border-top'
 alias now 'date +%Y-%m-%d--%H-%M-%S'
 alias today 'date +%Y-%m-%d'
 if command -sq colordiff
