@@ -128,6 +128,9 @@ set -Ux ANDROID_SDK_ROOT /opt/android-sdk
 # Misc. tools
 ################################################################################
 
+# ls color setting
+set -Ux LSCOLORS gxfxcxdxbxegedabagacad
+
 # fzf
 if command -sq fzf
     set -Ux FZF_TMUX 1
