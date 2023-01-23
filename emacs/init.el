@@ -130,7 +130,10 @@
     (cond (IS-MAC
            (add-to-list 'exec-path "/opt/homebrew/bin")))
     (cond (IS-LINUX
-           (add-to-list 'exec-path "/home/linuxbrew/bin")))))
+           (add-to-list 'exec-path "/home/linuxbrew/bin"))))
+  (leaf suppress-cl-deprecated-message
+    :custom (byte-compile-warnings '(not cl-functions obsolete)))
+  )
 
 (leaf completion
   :config
