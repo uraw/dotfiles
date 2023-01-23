@@ -93,7 +93,7 @@ function emacs
 end
 
 function start-emacs
-    if test (ps aux | grep -i emacs | grep daemon | wc -l) = 0
+    if test (ps aux | grep -i emacs | grep daemon | wc -l) -eq 0
         echo Starting emacs daemon
         eval (whereis emacs | tr ' ' '\n' | grep bin | head -n 1) --daemon
         echo Done
