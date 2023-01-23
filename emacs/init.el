@@ -52,12 +52,14 @@
     :ensure t
     :custom
     (imenu-list-size . 30)
-    (imenu-list-position . 'left)))
+    (imenu-list-position . 'left))
+  )
 
 (leaf cus-edit
   :doc "divide cusomizes that emacs try to add init.el, into custom.el"
   :url "https://zenn.dev/zenwerk/scraps/b1280f66c8d11a"
-  :custom (custom-file . '(locate-user-emacs-file "custom.el")))
+  :custom (custom-file . '(locate-user-emacs-file "custom.el"))
+  )
 
 (leaf major-modes
   :config
@@ -197,7 +199,8 @@
     :after company
     :defvar company-backends
     :config
-    (add-to-list 'company-backends 'company-c-headers)))
+    (add-to-list 'company-backends 'company-c-headers))
+  )
 
 (leaf python
   :custom
@@ -247,7 +250,8 @@
       (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
     (leaf flycheck-for-python
       :custom
-      (flycheck-python-flake8-executable . "pflake8"))))
+      (flycheck-python-flake8-executable . "pflake8")))
+  )
 
 (leaf user-interface
   :config
@@ -352,7 +356,8 @@
         (google-translate-translate
          (if asciip "en" "ja")
          (if asciip "ja" "en")
-         string)))))
+         string))))
+  )
 
 (leaf git
   :config
@@ -361,7 +366,8 @@
     :url "https://github.com/magit/magit"
     :ensure t
     :after compat git-commit magit-section with-editor
-    :bind ("C-x g" . magit-status)))
+    :bind ("C-x g" . magit-status))
+  )
 
 (leaf tag-jump
   :config
@@ -396,7 +402,8 @@
     :url "https://framagit.org/steckerhalter/discover-my-major"
     :ensure t
     :after makey
-    :bind ("<help> M" . discover-my-major)))
+    :bind ("<help> M" . discover-my-major))
+  )
 
 (leaf theme
   :config
@@ -404,7 +411,8 @@
     :doc "an opinionated pack of modern color-themes"
     :url "https://github.com/doomemacs/themes"
     :ensure t
-    :config (load-theme 'doom-monokai-pro t)))
+    :config (load-theme 'doom-monokai-pro t))
+  )
 
 (leaf frame-operation
   :config
@@ -429,7 +437,8 @@
     ("C-c l" . (lambda () (interactive) (enlarge-window-horizontally 8)))
     ("C-c h" . (lambda () (interactive) (shrink-window-horizontally 8)))
     ("C-c j" . (lambda () (interactive) (enlarge-window 8)))
-    ("C-c k" . (lambda () (interactive) (shrink-window 8)))))
+    ("C-c k" . (lambda () (interactive) (shrink-window 8))))
+  )
 
 (leaf key-binds
   :config
@@ -546,7 +555,8 @@
     (recent-auto-save-timer  . '(run-with-idle-timer 30 t 'recentf-save-list)))
   :custom
   (history-length . 1000)
-  (history-delete-duplicates . t))
+  (history-delete-duplicates . t)
+  )
 
 (leaf file-save
   :config
@@ -555,7 +565,8 @@
     :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
   (leaf add-newline-on-save
     :doc "Add final new line when file saved"
-    :custom (require-final-newline . t)))
+    :custom (require-final-newline . t))
+  )
 
 (leaf appearance
   :config
@@ -659,7 +670,8 @@
     (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable))
   (leaf use-google-as-default-search-engine
     :url "https://futurismo.biz/archives/2950#default-%E3%81%AE%E6%A4%9C%E7%B4%A2%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92-google-%E3%81%AB%E5%A4%89%E6%9B%B4"
-    :custom (eww-search-prefix . "https://www.google.co.jp/search?q=")))
+    :custom (eww-search-prefix . "https://www.google.co.jp/search?q="))
+  )
 
 (provide 'init)
 

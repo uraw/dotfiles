@@ -17,6 +17,7 @@ fish:
 	@ln -sfnv $(abspath fish/functions/fish_right_prompt.fish) ~/.config/fish/functions/
 
 git:
+	@mkdir -p ~/.config/git
 	@ln -sfnv $(abspath git/config) ~/.config/git/config
 
 python:
