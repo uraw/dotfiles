@@ -17,7 +17,7 @@ fish:
 	@ln -sfnv $(abspath fish/functions/fish_right_prompt.fish) ~/.config/fish/functions/
 
 git:
-	@ln -sfnv $(abspath git/.gitconfig) ~/
+	@ln -sfnv $(abspath git/config) ~/.config/git/config
 
 python:
 	@mkdir -p ~/.ipython/profile_default
@@ -40,7 +40,7 @@ uninstall:
 	@-rm -v ~/.config/fish/config.fish
 	@-rm -v ~/.config/fish/functions/fish_prompt.fish
 	@-rm -v ~/.config/fish/functions/fish_right_prompt.fish
-	@-rm -v ~/.gitconfig
+	@-rm -v ~/.config/git/config
 	@-rm -v ~/.flake8
 	@-rm -v ~/.ipython/profile_default/ipython_config.py
 	@-rm -v ~/.tmux.conf
