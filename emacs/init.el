@@ -1,535 +1,665 @@
+;; <leaf-install-code>
+
+;; Enabling running method below;
+;;  emacs -q -l ~/.debug.emacs.d/{{pkg}}/init.el
+(eval-and-compile
+  (when (or load-file-name byte-compile-current-file)
+    (setq user-emacs-directory
+          (expand-file-name
+           (file-name-directory (or load-file-name byte-compile-current-file))))))
+
+(eval-and-compile
+  (customize-set-variable
+   'package-archives '(("org" . "https://orgmode.org/elpa/")
+                       ("melpa" . "https://melpa.org/packages/")
+                       ("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
+
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t)
+                                        ;(leaf blackout :ensure t)
+
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init)))
+;; </leaf-install-code>
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; el-get
+;; My snippet
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-
-;; Install el-get if not installed
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(defconst IS-MAC (eq system-type 'darwin))
+(defconst IS-LINUX (eq system-type 'gnu/linux))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; el-get-bundle
+;; My leaves
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(el-get-bundle with-eval-after-load-feature) ;; https://tarao.hatenablog.com/entry/20150221/1424518030
 
-(el-get-bundle company-mode
-  ;; https://github.com/company-mode/company-mode/issues/227
-  ;; https://tarao.hatenablog.com/entry/20150221/1424518030#tips-byte-compilation
-  (with-eval-after-load-feature 'company
-    ;; https://qiita.com/syohex/items/8d21d7422f14e9b53b17
-    (setq company-idle-delay 0)
-    (setq company-minimum-prefix-length 2)
-    (setq company-selection-wrap-around t)
-    (set-face-attribute 'company-tooltip nil
-                        :foreground "black" :background "lightgrey")
-    (set-face-attribute 'company-tooltip-common nil
-                        :foreground "black" :background "lightgrey")
-    (set-face-attribute 'company-tooltip-common-selection nil
-                        :foreground "white" :background "steelblue")
-    (set-face-attribute 'company-tooltip-selection nil
-                        :foreground "black" :background "steelblue")
-    (set-face-attribute 'company-preview-common nil
-                        :background nil :foreground "lightgrey" :underline t)
-    (set-face-attribute 'company-scrollbar-fg nil
-                        :background "orange")
-    (set-face-attribute 'company-scrollbar-bg nil
-                        :background "gray40")
-    (define-key company-active-map (kbd "C-s") 'company-filter-candidates))
-  (global-company-mode))
+(leaf tools-for-leaf
+  :config
+  (leaf macrostep
+    :ensure t
+    :bind ("C-c e" . macrostep-expand))
+  (leaf leaf-convert
+    :ensure t)
+  (leaf leaf-tree
+    :ensure t
+    :custom
+    (imenu-list-size . 30)
+    (imenu-list-position . 'left)))
 
-(el-get-bundle dash)
+(leaf cus-edit
+  :doc "divide cusomizes that emacs try to add init.el, into custom.el"
+  :url "https://zenn.dev/zenwerk/scraps/b1280f66c8d11a"
+  :custom (custom-file . '(locate-user-emacs-file "custom.el")))
 
-(el-get-bundle fill-column-indicator)
-
-(el-get-bundle flycheck
-  (global-flycheck-mode)
-  (with-eval-after-load-feature 'flycheck
-    ;; https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts
-    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-
-    ;; Check for python user 'flake8'
-    (setq flycheck-python-flake8-executable "flake8")))
-
-(el-get-bundle go-mode)
-
-(el-get-bundle popup)
-
-(el-get-bundle google-translate
-  (require 'google-translate)
-  ;; http://emacs.rubikitch.com/google-translate-sentence/
-  (defvar google-translate-english-chars "[:ascii:]’“”–"
-    "これらの文字が含まれているときは英語とみなす")
-  (defun google-translate-enja-or-jaen (&optional string)
-    "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (save-excursion
-                   (let (s)
-                     (forward-char 1)
-                     (backward-sentence)
-                     (setq s (point))
-                     (forward-sentence)
-                     (buffer-substring s (point)))))))
-    (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" google-translate-english-chars)
-                    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
-  (global-set-key (kbd "C-c t") 'google-translate-enja-or-jaen)
-
-  ;; Workaround
-  ;; https://qiita.com/akicho8/items/cae976cb3286f51e4632
-  ;; https://github.com/atykhonov/google-translate/issues/98
-  (defun google-translate-json-suggestion (json)
-    "Retrieve from JSON (which returns by the
-`google-translate-request' function) suggestion. This function
-does matter when translating misspelled word. So instead of
-translation it is possible to get suggestion."
-    (let ((info (aref json 7)))
-      (if (and info (> (length info) 0))
-          (aref info 1)
-        nil))))
-
-(el-get-bundle helm
-  ;; https://qiita.com/jabberwocky0139/items/86df1d3108e147c69e2c
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-  (global-set-key (kbd "C-x t") 'helm-recentf)
-  (global-set-key (kbd "<help> w") 'helm-man-woman) ;; https://www.ncaq.net/2017/11/02/
-  (global-set-key (kbd "M-:") 'helm-eval-expression)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action) ; https://kiririmode.hatenablog.jp/entry/20160216/1455590100
+(leaf major-modes
+  :config
+  (leaf cc-mode
+    :doc "major mode for editing C and similar languages"
+    :defvar (c-basic-offset)
+    :hook
+    (c-mode-hook . '((c-set-style "bsd")
+                     (setq c-basic-offset 4)))
+    (c++-mode-hook . '((c-set-style "bsd")
+                       (setq c-basic-offset 4))))
+  (leaf go-mode
+    :doc "Major mode for the Go programming language"
+    :url "https://github.com/dominikh/go-mode.el"
+    :ensure t)
+  (leaf markdown-mode
+    :doc "Major mode for Markdown-formatted text"
+    :url "https://jblevins.org/projects/markdown-mode/"
+    :ensure t
+    :bind ("C-c m" . markdown-mode)
+    :custom
+    (markdown-fontify-code-blocks-natively . t)  ;; enable syntax highlight in code block
+    :config
+    (custom-set-faces
+     '(hl-line ((t (:underline t))))
+     '(markdown-header-delimiter-face ((t (:inherit nil :foreground "color-161" :weight bold))))
+     '(markdown-header-face ((t (:inherit nil :background "color-242" :underline t :weight bold))))
+     '(markdown-header-face-1 ((t (:inherit nil :foreground "color-40" :weight bold :height 1.0))))
+     '(markdown-header-face-2 ((t (:inherit nil :foreground "color-33" :height 1.0))))
+     '(markdown-header-face-3 ((t (:foreground "color-178" :height 1.0))))
+     '(markdown-header-face-4 ((t (:foreground "color-105" :height 1.0))))
+     '(markdown-header-face-5 ((t (:foreground "color-219" :weight bold :height 1.0))))
+     '(markdown-header-face-6 ((t (:foreground "color-244" :weight bold))))
+     '(markdown-list-face ((t (:foreground "color-135"))))
+     )
+    (leaf disable-company-mode-on-markdown-mode
+      :doc "disable company-mode on markdown-mode"
+      :hook (markdown-mode-hook . (lambda () (company-mode -1)))))
+  (leaf yaml-mode
+    :doc "Major mode for editing YAML files"
+    :url "https://github.com/yoshiki/yaml-mode"
+    :ensure t)
+  (leaf rust-mode
+    :doc "A major-mode for editing Rust source code"
+    :url "https://github.com/rust-lang/rust-mode"
+    :ensure t)
+  (leaf toml-mode
+    :doc "Major mode for editing TOML files"
+    :url "https://github.com/dryman/toml-mode.el"
+    :ensure t)
+  (leaf crontab-mode
+    :doc "Major mode for crontab(5)"
+    :url "https://github.com/emacs-pe/crontab-mode"
+    :ensure t)
+  (leaf arm-mode
+    :el-get charJe/arm-mode
+    :require t)
+  (leaf fish-mode
+    :doc "Major mode for fish shell scripts"
+    :ensure t)
+  (leaf makefile-mode
+    :hook (makefile-gmake-mode-hook . (lambda () (setq indent-tabs-mode t))))
   )
 
-(el-get-bundle helm-gtags
-  (add-hook 'helm-gtags-mode-hook
-            (lambda ()
-              (local-set-key (kbd "M-t") 'helm-gtags-find-tag)
-              (local-set-key (kbd "M-a") 'helm-gtags-pop-stack)
-              (local-set-key (kbd "M-r") 'helm-gtags-find-rtag)
-              (local-set-key (kbd "M-s") 'helm-gtags-find-symbol)
-              (local-set-key (kbd "M-j") 'helm-gtags-find-pattern)))
-  (add-hook 'c-mode-hook 'helm-gtags-mode)
-  (add-hook 'c-mode-common-hook 'helm-gtags-mode)
-  (add-hook 'c++-mode-hook 'helm-gtags-mode)
-  (add-hook 'java-mode-hook 'helm-gtags-mode)
-  (add-hook 'python-mode-hook 'helm-gtags-mode)
-  (add-hook 'ruby-mode-hook 'helm-gtags-mode)
-  (add-hook 'asm-mode-hook 'helm-gtags-mode))
+(leaf system
+  :config
+  (leaf exec-path-for-brew
+    :url "https://blog.kyanny.me/entry/2014/09/12/135629"
+    :config
+    (cond (IS-MAC
+           (add-to-list 'exec-path "/opt/homebrew/bin")))
+    (cond (IS-LINUX
+           (add-to-list 'exec-path "/home/linuxbrew/bin")))))
 
-(el-get-bundle magit
-  :info nil
-  (global-set-key (kbd "C-x g") 'magit-status))
+(leaf completion
+  :config
+  (leaf company
+    :doc "Modular text completion framework"
+    :url ("http://company-mode.github.io/"
+          "https://github.com/company-mode/company-mode/issues/227"
+          "https://tarao.hatenablog.com/entry/20150221/1424518030#tips-byte-compilation")
+    :ensure t
+    :blackout t
+    :bind ((:company-active-map
+            ("M-n" . nil)
+            ("M-p" . nil)
+            ("C-s" . company-filter-candidates)
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)
+            ("<tab>" . company-complete-selection))
+           (:company-search-map
+            ("C-n" . company-select-next)
+            ("C-p" . company-select-previous)))
+    :custom
+    (company-idle-delay . 0)
+    (company-minimum-prefix-length . 2)
+    (company-select-wrap-around . t)
+    :config
+    (leaf company-face
+      :url "https://qiita.com/syohex/items/8d21d7422f14e9b53b17"
+      :config
+      (set-face-attribute 'company-tooltip nil
+                          :foreground "black"
+                          :background "lightgrey")
+      (set-face-attribute 'company-tooltip-common nil
+                          :foreground "black"
+                          :background "lightgrey")
+      (set-face-attribute 'company-tooltip-common-selection nil
+                          :foreground "white"
+                          :background "steelblue")
+      (set-face-attribute 'company-tooltip-selection nil
+                          :foreground "poblack"
+                          :background "steelblue")
+      (set-face-attribute 'company-preview-common nil
+                          :background nil
+                          :foreground "lightgrey"
+                          :underline t)
+      (set-face-attribute 'company-scrollbar-fg nil
+                          :background "orange")
+      (set-face-attribute 'company-scrollbar-bg nil
+                          :background "gray40"))
+    :global-minor-mode global-company-mode)
+  (leaf company-statistics
+    :doc "Sort candidates using completion history"
+    :url "https://github.com/company-mode/company-statistics"
+    :ensure t
+    :after company
+    :require t
+    :config (company-statistics-mode))
+  (leaf company-c-headers
+    :doc "Company mode backend for C/C++ header files"
+    :url "https://emacs-jp.github.io/tips/emacs-in-2020"
+    :ensure t
+    :after company
+    :defvar company-backends
+    :config
+    (add-to-list 'company-backends 'company-c-headers)))
 
-(el-get-bundle markdown-mode
-  (global-set-key (kbd "C-c m") 'markdown-mode)
-  ;; enable syntax highlight in code block
-  (with-eval-after-load-feature 'markdown-mode
-    (setq markdown-fontify-code-blocks-natively t))
-  (add-hook 'markdown-mode-hook
-            (lambda () (company-mode -1))) ;; disable company-mode on markdown-mode
+(leaf python
+  :custom
+  (python-indent-guess-indent-offset . nil)
+  (python-indent . 4)
+  :config
+  (leaf elpy
+    :doc "Emacs Python Development Environment"
+    :url "https://github.com/jorgenschaefer/elpy"
+    :ensure t
+    :after company highlight-indentation pyvenv yasnippet
+    :defer-config
+    (leaf elpy-customize
+      :custom
+      (python-shell-interpreter . "ipython3")
+      (python-shell-interpreter-args . "-i")
+      (elpy-rpc-python-command . "python3")
+      (python-check-command . "pflake8")
+      :config
+      (custom-set-variables
+       '(elpy-modules
+         (quote
+          (elpy-module-company
+           elpy-module-eldoc
+           elpy-module-flymake
+           elpy-module-folding
+           elpy-module-pyvenv
+           elpy-module-django
+           elpy-module-sane-defaults))))))
+  (leaf py-isort
+    :doc "Use isort to sort the imports in a Python buffer"
+    :url "http://paetzke.me/project/py-isort.el"
+    :ensure t
+    :hook (before-save-hook . py-isort-before-save))
   )
 
-(el-get-bundle popwin
-  (require 'popwin)
-  (popwin-mode 1)
-  ;; https://qiita.com/fujimotok/items/164cd80b89992eeb4efe
-  (setq helm-display-function #'display-buffer)  ;; for popwin
-  (push '("helm" :regexp t :height 0.3) popwin:special-display-config))
-
-(el-get-bundle volatile-highlights)
-
-(el-get-bundle yaml-mode)
-
-(el-get-bundle emacswiki:fuzzy-format
-  :features fuzzy-format
-  (setq fuzzy-format-default-indent-tabs-mode nil)
-  (global-fuzzy-format-mode t))
-
-(el-get-bundle m4-mode
-  :url "https://raw.githubusercontent.com/jwiegley/emacs-release/master/lisp/progmodes/m4-mode.el"
-  :features m4-mode)
-
-(el-get-bundle rust-mode)
-
-(el-get-bundle toml-mode)
-
-(el-get-bundle crontab-mode)
-
-(el-get-bundle ace-link
-  ;; for eww
-  (ace-link-setup-default))
-
-(el-get-bundle smex
-  (global-set-key (kbd "M-x") 'smex))
-
-(el-get-bundle plantuml-mode
-  (add-to-list 'auto-mode-alist '("\.pu$" . plantuml-mode))
-  (setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-  (with-eval-after-load-feature 'plantuml-mode
-    (setq plantuml-default-exec-mode 'jar)
-    (setq plantuml-java-options "")
-    (setq plantuml-options "-charset UTF-8")))
-
-(el-get-bundle elpy
-  (elpy-enable)
-  (with-eval-after-load-feature 'elpy
-    (setq python-shell-interpreter "ipython3")
-    (setq python-shell-interpreter-args "-i")
-    (setq elpy-rpc-python-command "python3")
-    (setq python-check-command "pflake8")
-    (custom-set-variables
-     '(elpy-modules
-       (quote
-        (elpy-module-company
-         elpy-module-eldoc
-         elpy-module-flymake
-         elpy-module-folding
-         elpy-module-pyvenv
-         elpy-module-django
-         elpy-module-sane-defaults))))))
-
-(el-get-bundle elpa:edit-indirect) ;; For code block in markdown-mode
-
-(el-get-bundle jguenther/discover-my-major
-  (global-set-key (kbd "<help> C-m") 'discover-my-major))
-
-(el-get-bundle elpy
-  (elpy-enable)
-  (with-eval-after-load-feature 'elpy
-    (setq python-shell-interpreter "ipython3")
-    (setq python-shell-interpreter-args "-i")
-    (setq elpy-rpc-python-command "python3")
-    (setq python-check-command "flake8")
-    (custom-set-variables
-     '(elpy-modules
-       (quote
-        (elpy-module-company
-         elpy-module-eldoc
-         elpy-module-flymake
-         elpy-module-folding
-         elpy-module-pyvenv
-         elpy-module-yasnippet
-         elpy-module-django
-         elpy-module-sane-defaults))))))
-
-(el-get-bundle arm-mode
-  :type git
-  :url "https://github.com/charje/arm-mode")
-
-;(el-get-bundle color-theme-solarized
-;  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-solarized")
-;  (load-theme 'solarized t))
-
-(el-get-bundle color-theme-railscasts
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-railscasts")
-  (load-theme 'railscast t))
-
-(el-get-bundle mwim
-  :type git
-  :url "https://github.com/alezost/mwim.el"
-  (global-set-key (kbd "C-a") 'mwim-beginning)
-  (global-set-key (kbd "C-e") 'mwim-end))
-
-(el-get-bundle py-isort
-  (add-hook 'before-save-hook 'py-isort-before-save))
-
-(el-get-bundle yasnippet
-  (require 'yasnippet)
-  (yas-global-mode))
-
-(el-get-bundle fish-mode)
-
-(el-get-bundle ndmacro
-  :type git
-  :url "https://github.com/snj14/ndmacro.el"
-  (require 'ndmacro)
-  (global-set-key (kbd "C-]") 'ndmacro))
-
-(el-get-bundle helm-rg
-  (global-set-key (kbd "C-x a") 'helm-rg))
-
-
-(el-get 'sync)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  environment
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; https://blog.kyanny.me/entry/2014/09/12/135629
-(add-to-list 'exec-path "/opt/homebrew/bin")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; recentf
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; https://tomoya.hatenadiary.org/entry/20110217/1297928222
-;; https://qiita.com/tadsan/items/68b53c2b0e8bb87a78d7
-(recentf-mode 1)
-(setq recentf-max-saved-items 2000) ;; Keep latest 2000 files up
-(setq recentf-auto-cleanup 'never) ;;
-(setq recentf-exclude '("/recentf" "COMMIT_EDITMSG"))
-(setq recent-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Undo
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq undo-limit 1000000)
-(setq undo-strong-limit 13000000)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Backup
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; File save
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Add executable permission if a file has shebang
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
-
-;; Add final new line when file saved
-(setq require-final-newline t)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Appearance
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Disable Startup message buffer
-(setq inhibit-startup-message t)
-
-;; Suppress beep
-;; https://qiita.com/ongaeshi/items/696407fc6c42072add54
-(setq ring-bell-function 'ignore)
-
-;; Handle escape sequence in shell-mode
-;; http://d.hatena.ne.jp/hiboma/20061031/1162277851
-(autoload 'ansi-color-for-comint-mode-on
-  "ansi-color"
-  "Set 'ansi-color-for-comint-mode' to t." t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;; Highlight parens
-(show-paren-mode)
-
-;; Show column number in mode-line
-(column-number-mode t)
-
-;; Hide password on shell-mode
-(add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
-
-;; Hide menu bar when emacs running in window mode
-(if window-system
-    (menu-bar-mode 1)
-  (menu-bar-mode -1))
-
-;; truncate line in divided window
-;; https://beiznotes.org/200907131247476145-2/
-(setq-default truncate-partial-width-windows t)
-(setq-default truncate-lines t)
-
-;; Custom setting by `M-x list-faces-display`
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(hl-line ((t (:underline t))))
- '(markdown-header-delimiter-face ((t (:inherit nil :foreground "color-161" :weight bold))))
- '(markdown-header-face ((t (:inherit nil :background "color-242" :underline t :weight bold))))
- '(markdown-header-face-1 ((t (:inherit nil :foreground "color-40" :weight bold :height 1.0))))
- '(markdown-header-face-2 ((t (:inherit nil :foreground "color-33" :height 1.0))))
- '(markdown-header-face-3 ((t (:foreground "color-178" :height 1.0))))
- '(markdown-header-face-4 ((t (:foreground "color-105" :height 1.0))))
- '(markdown-header-face-5 ((t (:foreground "color-219" :weight bold :height 1.0))))
- '(markdown-header-face-6 ((t (:foreground "color-244" :weight bold))))
- '(markdown-list-face ((t (:foreground "color-135"))))
-)
-
-;; Hilight current line
-;; http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035
-(global-hl-line-mode t)
-
-;; volatile-highlights
-;; http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035
-;; Temporary highlight an area changed by yank or undo
-(volatile-highlights-mode t)
-
-;; Show current function name in status-line by which-function-mode
-;; https://stackoverflow.com/questions/16985544/display-function-name-in-status-line
-(which-function-mode 1)
-
-;; line number
-(if (version<= "26.0.50" emacs-version)
-    (global-display-line-numbers-mode)
-  (setq linum-format "%d ")
-  (put 'upcase-region 'disabled nil)
-  (put 'downcase-region 'disabled nil))
-
-(when (equal system-type 'darwin)
-  (set-face-attribute 'default nil
-                      :height 160
-                      :family "Monaco"))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Control
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; scroll file line by line
-;; http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=sane-next-line
-(defun sane-next-line (arg)
-  "Goto next line by ARG steps with scrolling sanely if needed."
-  (interactive "p")
-  ;;(let ((newpt (save-excursion (line-move arg) (point))))
-  (let ((newpt (save-excursion (next-line arg) (point))))
-    (while (null (pos-visible-in-window-p newpt))
-      (if (< arg 0) (scroll-down 1) (scroll-up 1)))
-    (goto-char newpt)
-    (setq this-command 'next-line)
-    ()))
-(defun sane-previous-line (arg)
-  "Goto previous line by ARG steps with scrolling back sanely if needed."
-  (interactive "p")
-  (sane-next-line (- arg))
-  (setq this-command 'previous-line)
-  ())
-(defun sane-newline (arg)
-  "Put newline\(s\) by ARG with scrolling sanely if needed."
-  (interactive "p")
-  (let ((newpt (save-excursion (newline arg) (indent-according-to-mode) (point))))
-    (while (null (pos-visible-in-window-p newpt)) (scroll-up 1))
-    (goto-char newpt)
-    (setq this-command 'newline)
-    ()))
-(global-set-key (kbd "<up>") 'sane-previous-line)
-(global-set-key (kbd "<down>") 'sane-next-line)
-(global-set-key (kbd "C-m") 'sane-newline)
-(global-set-key (kbd "C-n") 'sane-next-line)
-(global-set-key (kbd "C-p") 'sane-previous-line)
-(global-set-key (kbd "M-?") 'help-command) ;; http://flex.phys.tohoku.ac.jp/texi/eljman/eljman_146.html
-
-;; The opposite of forward-window
-(defun backward-window ()
-  (interactive)
-  (other-window -1))
-(global-set-key (kbd "C-x O") 'backward-window)
-
-;; Window split as tmux
-(global-set-key (kbd "C-x -") (lambda nil (interactive) (split-window-below) (other-window 1)))
-(global-set-key (kbd "C-x |") (lambda nil (interactive) (split-window-right) (other-window 1)))
-
-;; Window resize
-(global-set-key (kbd "C-c l") (lambda () (interactive) (enlarge-window-horizontally 8)))
-(global-set-key (kbd "C-c h") (lambda () (interactive) (shrink-window-horizontally 8)))
-(global-set-key (kbd "C-c j") (lambda () (interactive) (enlarge-window 8)))
-(global-set-key (kbd "C-c k") (lambda () (interactive) (shrink-window 8)))
-
-;; Goto line
-(global-set-key (kbd "M-g") 'goto-line)
-
-;; Disable transpose-character w/ C-t avoiding collision for tmux
-(global-set-key (kbd "C-t") nil)
-
-;; C-h as DEL
-;; https://qiita.com/takc923/items/e279f223dbb4040b1157
-(define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-
-;; Just one space
-;; delete-horizontal-space may not be used
-;; https://ayatakesi.github.io/emacs/24.5/Deletion.html
-(global-set-key (kbd "M-\\") 'just-one-space)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Edit
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; C-k kill whole line at once
-(setq kill-whole-line t)
-
-;; Indent with 4 spaces without TAB
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-;; New line indentation
-(global-set-key (kbd "C-m") 'newline-and-indent)
-(global-set-key (kbd "C-j") 'newline)
-
-;; Delete rectangle
-(global-set-key (kbd "C-c :") 'delete-rectangle)
-
-(setq-default c-basic-offset 4)
-
-;; hs-minor-mode
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (hs-minor-mode 1)))
-(add-hook 'c-mode-hook
-          '(lambda ()
-             (hs-minor-mode 1)))
-(define-key global-map (kbd "C-c TAB") 'hs-toggle-hiding)
-
-;; Copy current word w/ F5 as Hidemaru
-(global-set-key (kbd "<f5>") '(lambda () (interactive) (kill-new (current-word))))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Python
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq python-indent-guess-indent-offset nil)
-(setq python-indent 4)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Makefile
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'makefile-gmake-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode t)))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; eww
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Background colors
-;; https://futurismo.biz/archives/2950#%E8%83%8C%E6%99%AF%E8%89%B2%E3%81%AE%E8%A8%AD%E5%AE%9A
-(defvar eww-disable-colorize t)
-(defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
-  (unless eww-disable-colorize
-    (funcall orig start end fg)))
-(advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
-(advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
-
-;; Set default search engine Google
-;; https://futurismo.biz/archives/2950#default-%E3%81%AE%E6%A4%9C%E7%B4%A2%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92-google-%E3%81%AB%E5%A4%89%E6%9B%B4
-(setq eww-search-prefix "https://www.google.co.jp/search?q=")
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Key bindings docs
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; http://dqn.sakusakutto.jp/2012/04/emacs-global-set-key-define-key_global-map.html
-;; http://d.hatena.ne.jp/tequilasunset/20100425/p1
-;; http://d.hatena.ne.jp/tama_sh/20110206/1296976730
-
-;;; init.el ends here
+(leaf syntax-check
+  :config
+  (leaf flycheck
+    :doc "On-the-fly syntax checking"
+    :url "http://www.flycheck.org"
+    :ensure t
+    :defer-config
+    (leaf disable-flycheck-for-emacs-lisp
+      :url "https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts"
+      :custom
+      (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
+    (leaf flycheck-for-python
+      :custom
+      (flycheck-python-flake8-executable . "pflake8"))))
+
+(leaf user-interface
+  :config
+  (leaf popup
+    :doc "Visual Popup User Interface"
+    :url "https://github.com/auto-complete/popup-el"
+    :ensure t)
+  (leaf helm-core
+    :doc "Development files for Helm"
+    :url "https://emacs-helm.github.io/helm/"
+    :ensure t)
+  (leaf helm
+    :doc "Helm is an Emacs incremental and narrowing framework"
+    :url ("https://emacs-helm.github.io/helm/"
+          "https://qiita.com/jabberwocky0139/items/86df1d3108e147c69e2c")
+    :ensure t
+    :bind
+    ("C-x C-f"  . helm-find-files)
+    ("M-y"      . helm-show-kill-ring)
+    ("C-x t"    . helm-recentf)
+    ("<help> w" . helm-man-woman) ;; https://www.ncaq.net/2017/11/02/
+    ("M-:"      . helm-eval-expression)
+    ("M-x"      . helm-M-x)
+    )
+  (leaf which-key
+    :doc "Display available keybindings in popup"
+    :url "https://github.com/justbur/emacs-which-key"
+    :blackout t
+    :ensure t
+    :global-minor-mode which-key-mode
+    :custom
+    (which-key-idle-delay . 0.4)
+    (which-key-idle-secondary-delay . 0.4))
+  (leaf popwin
+    :doc "Popup Window Manager"
+    :url "https://github.com/emacsorphanage/popwin"
+    :ensure t
+    :config
+    (popwin-mode 1)
+    (leaf popwin-for-helm
+      :url "https://qiita.com/fujimotok/items/164cd80b89992eeb4efe"
+      :custom (helm-display-function . #'display-buffer)
+      :defvar popwin:special-display-config
+      :config
+      (push '("helm" :regexp t :height 0.3) popwin:special-display-config)))
+  (leaf y-or-n-p
+    :doc "Use y/n instead of yes/no"
+    :config
+    (defalias 'yes-or-no-p 'y-or-n-p))
+  (leaf helm-rg
+    :doc "a helm interface to ripgrep"
+    :url "https://github.com/cosmicexplorer/helm-rg"
+    :ensure t
+    :after helm
+    :bind ("C-x a" . helm-rg))
+  )
+
+(leaf language
+  :config
+  (leaf ispell
+    :doc "interface to spell checkers"
+    :when (executable-find "aspell")
+    :custom
+    (ispell-program-name . '(executable-find "aspell"))
+    (ispell-extra-args   . '("--sug-mode=ultra" "--lang=en_US" "--camel-case")))
+  (leaf flyspell
+    :doc "On-the-fly spell checker"
+    :hook (prog-mode-hook . flyspell-prog-mode))
+  (leaf google-translate
+    :doc "Emacs interface to Google Translate"
+    :url ("https://github.com/atykhonov/google-translate"
+          "http://emacs.rubikitch.com/google-translate-sentence/")
+    :require t
+    :ensure t
+    :bind ("C-c t" . google-translate-enja-or-jaen)
+    :defun google-translate-enja-or-jaen google-translate-json-suggestion google-translate-translate
+    :defvar google-translate-english-chars
+    :defer-config
+    (defvar google-translate-english-chars "[:ascii:]’“”–"
+      "これらの文字が含まれているときは英語とみなす")
+    (defun google-translate-enja-or-jaen (&optional string)
+      "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
+      (interactive)
+      (setq string
+            (cond ((stringp string) string)
+                  (current-prefix-arg
+                   (read-string "Google Translate: "))
+                  ((use-region-p)
+                   (buffer-substring (region-beginning) (region-end)))
+                  (t
+                   (save-excursion
+                     (let (s)
+                       (forward-char 1)
+                       (backward-sentence)
+                       (setq s (point))
+                       (forward-sentence)
+                       (buffer-substring s (point)))))))
+      (let* ((asciip (string-match
+                      (format "\\`[%s]+\\'" google-translate-english-chars)
+                      string)))
+        (run-at-time 0.1 nil 'deactivate-mark)
+        (google-translate-translate
+         (if asciip "en" "ja")
+         (if asciip "ja" "en")
+         string)))))
+
+(leaf git
+  :config
+  (leaf magit
+    :doc "A Git porcelain inside Emacs."
+    :url "https://github.com/magit/magit"
+    :ensure t
+    :after compat git-commit magit-section with-editor
+    :bind ("C-x g" . magit-status)))
+
+(leaf tag-jump
+  :config
+  (leaf dumb-jump
+    :doc "Jump to definition for 50+ languages without configuration"
+    :url "https://github.com/jacktasia/dumb-jump"
+    :ensure t
+    :custom
+    (dumb-jump-selector 'helm)
+    (dumb-jump-force-searcher 'rg)
+    :hook (xref-backend-functions . dumb-jump-xref-activate))
+  )
+
+(leaf indentation
+  :config
+  (leaf fuzzy-format
+    :doc "select indent-tabs-mode and format code automatically."
+    :url "http://code.101000lab.org, http://trac.codecheck.in"
+    :el-get emacsmirror/fuzzy-format
+    :require t)
+  (leaf indent-with-4-spaces
+    :doc "indent with 4 spaces without tab"
+    :custom
+    (indent-tabs-mode . nil)
+    (tab-width . 4))
+  )
+
+(leaf utility
+  :config
+  (leaf discover-my-major
+    :doc "Discover key bindings and their meaning for the current Emacs major mode"
+    :url "https://framagit.org/steckerhalter/discover-my-major"
+    :ensure t
+    :after makey
+    :bind ("<help> M" . discover-my-major)))
+
+(leaf theme
+  :config
+  (leaf doom-themes
+    :doc "an opinionated pack of modern color-themes"
+    :url "https://github.com/doomemacs/themes"
+    :ensure t
+    :config (load-theme 'doom-monokai-pro t)))
+
+(leaf frame-operation
+  :config
+  (leaf frame-resize-way
+    :custom (frame-resize-pixelwise . t))
+  )
+
+(leaf window-operation
+  :config
+  (leaf opposite-window
+    :doc "The opposite of forward-window"
+    :bind ("C-x O" . (lambda () (interactive) (other-window -1))))
+  (leaf split-window
+    :doc "Split window as tmux"
+    :bind
+    ("C-x -" . (lambda nil (interactive) (split-window-below) (other-window 1)))
+    ("C-x |" . (lambda nil (interactive) (split-window-right) (other-window 1)))
+    )
+  (leaf resize-window
+    :doc "Resize window as tmux"
+    :bind
+    ("C-c l" . (lambda () (interactive) (enlarge-window-horizontally 8)))
+    ("C-c h" . (lambda () (interactive) (shrink-window-horizontally 8)))
+    ("C-c j" . (lambda () (interactive) (enlarge-window 8)))
+    ("C-c k" . (lambda () (interactive) (shrink-window 8)))))
+
+(leaf key-binds
+  :config
+  (leaf help-command
+    :url "http://flex.phys.tohoku.ac.jp/texi/eljman/eljman_146.html"
+    :bind ("M-h" . help-command))
+  (leaf goto-line
+    :doc "Goto line"
+    :bind ("M-g" . goto-line))
+  (leaf disable-c-t
+    :doc "Disable transpose-character w/ C-t avoding collision for tmux"
+    :bind ("C-t" . nil))
+  (leaf just-one-space
+    :doc "delete-horizontal-space may not be used"
+    :url "https://ayatakesi.github.io/emacs/24.5/Deletion.html"
+    :bind
+    ("M-\\" . just-one-space)
+    ("M-¥"  . just-one-space))
+  (leaf switch-buffer
+    :bind
+    ("C-x b" . helm-mini))
+  (leaf new-line-indentation
+    :doc "New line indentation"
+    :bind
+    ("C-m" . newline-and-indent)
+    ("C-j" . newline))
+  )
+
+(leaf backup
+  :config
+  (leaf store-backup-in-tmpdir
+    :doc "Store all backup up autosave files in the temporary directory"
+    :url "https://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/"
+    :custom
+    (backup-directory-alist         . `((".*" . ,temporary-file-directory)))
+    (auto-save-file-name-transforms . `((".*" ,temporary-file-directory t))))
+  )
+
+(leaf editor
+  :config
+  (leaf c-h-as-del
+    :url "https://qiita.com/takc923/items/e279f223dbb4040b1157"
+    :config
+    (define-key key-translation-map (kbd "C-h") (kbd "<DEL>")))
+  (leaf dmacro
+    :doc "Repeated detection and execution of key operation"
+    :url "https://github.com/emacs-jp/dmacro"
+    :ensure t
+    :blackout t
+    :custom `((dmacro-key . ,(kbd "C-S-e")))
+    :global-minor-mode global-dmacro-mode)
+  (leaf undo
+    :custom
+    (undo-limit        . 1000000)
+    (undo-strong-limit . 13000000))
+  (leaf delete-rectangle
+    :bind ("C-c :" . delete-rectangle))
+  (leaf mwim
+    :doc "Switch between the beginning/end of line or code"
+    :url "https://github.com/alezost/mwim.el"
+    :ensure t
+    :bind
+    ("C-a" . mwim-beginning)
+    ("C-e" . mwim-end))
+  (leaf scroll-line-by-line
+    :url ("http://www.emacswiki.org/emacs/SmoothScrolling"
+          "https://stackoverflow.com/questions/1128927/how-to-scroll-line-by-line-in-gnu-emacs")
+    :custom
+    (scroll-step . 1)
+    (scroll-conservatively . 10000))
+  (leaf disable-auto-truncate-line
+    :doc "truncate line in divided window"
+    :url ("https://ayatakesi.github.io/emacs/25.1/Split-Window.html#Split-Window"
+          "https://beiznotes.org/200907131247476145-2/")
+    :custom
+    (truncate-partial-width-windows . t)
+    (truncate-lines . t))
+  (leaf kill-whole-line
+    :doc "C-k kill whole line at once"
+    :custom (kill-whole-line . t))
+  (leaf electric
+    :doc "Insert automatic paren, quote"
+    :global-minor-mode electric-pair-mode)
+  (leaf delsel
+    :doc "delete selection if you insert"
+    :global-minor-mode delete-selection-mode)
+  (leaf autorevert
+    :doc "revert buffers when fiels on disk change"
+    :custom (auto-revert-interval . 0.1)
+    :global-minor-mode global-auto-revert-mode)
+  (leaf text-quote-straight
+    :url "https://ayatakesi.github.io/lispref/27.2/html/Text-Quoting-Style.html"
+    :custom (text-quoting-style . 'straight))
+  (leaf hs-minor-mode
+    :blackout t
+    :hook (prog-mode-hook . hs-minor-mode)
+    :bind ("C-c TAB" . hs-toggle-hiding))
+  (leaf edit-indirect
+    :doc "Edit regions in separate buffers"
+    :url "https://github.com/Fanael/edit-indirect"
+    :ensure t)
+  )
+
+(leaf history
+  :config
+  (leaf recentf
+    :doc "setup a menu of recently opened files"
+    :url "https://tomoya.hatenadiary.org/entry/20110217/1297928222" "https://qiita.com/tadsan/items/68b53c2b0e8bb87a78d7"
+    :config (recentf-mode 1)
+    :custom
+    (recentf-max-saved-items . 2000) ;; Keep latest 2000 files up
+    (recentf-auto-cleanup    . 'never)
+    (recentf-exclude         . '("/recentf" "COMMIT_EDITMSG"))
+    (recent-auto-save-timer  . '(run-with-idle-timer 30 t 'recentf-save-list)))
+  :custom
+  (history-length . 1000)
+  (history-delete-duplicates . t))
+
+(leaf file-save
+  :config
+  (leaf give-executable-permissionfile-on-save
+    :doc "Add executable permission if a file has shebang"
+    :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
+  (leaf add-newline-on-save
+    :doc "Add final new line when file saved"
+    :custom (require-final-newline . t)))
+
+(leaf appearance
+  :config
+  (leaf hide-menu-bar
+    :doc "Hide menu bar when emacs running in window mode"
+    :config
+    (if window-system
+        (menu-bar-mode 1)
+      (menu-bar-mode -1)))
+  (leaf highlight-current-line
+    :doc "Hilight current line"
+    :url "http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035"
+    :global-minor-mode global-hl-line-mode)
+  (leaf font-face-for-darwin
+    :if (equal system-type 'darwin)
+    :config (set-face-attribute 'default nil
+                                :height 160
+                                :family "Monaco"))
+  (leaf paren
+    :doc "highlight matching paren"
+    :custom (show-paren-delay . 0.1)
+    :global-minor-mode show-paren-mode)
+  (leaf quiet-start
+    :doc "Disable Startup message buffer"
+    :custom (inhibit-startup-message . t))
+  (leaf enable-go-address-mode
+    :global-minor-mode global-goto-address-mode)
+  (leaf hide-password
+    :doc Hide password on shell-mode
+    :hook (comint-output-filter-functions . comint-watch-for-password-prompt))
+  (leaf ansi-color
+    :doc "Use same coloring as commandline by handling escape sequence in shell-mode"
+    :url "http://d.hatena.ne.jp/hiboma/20061031/1162277851"
+    :commands ansi-color-for-comint-mode-on
+    :hook (shell-mode-hook . ansi-color-for-comint-mode-on))
+  (leaf volatile-highlights
+    :doc "Minor mode for visual feedback on some operations."
+    :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
+    :ensure t)
+  (leaf whitespace-mode
+    :doc "Visualize whitespace with whitespace-mode"
+    :tag "need-debug"
+    :custom
+                                        ;(whitespace-face . (face trailing tabs spaces empty))
+    (whitespace-line-column . 1000000)
+    :hook
+    (prog-mode-hook . whitespace-mode)
+    (before-save-hook . whitespace-cleanup))
+  (leaf symbol-overlay
+    :doc "Highlight symbols with keymap-enabled overlays"
+    :url "https://github.com/wolray/symbol-overlay/"
+    :ensure t
+    :hook (prog-mode-hook . symbol-overlay-mode))
+  (leaf highlight
+    :config
+    (leaf highlight-numbers
+      :doc "Highlight numbers in source code"
+      :url "https://github.com/Fanael/highlight-numbers"
+      :ensure t
+      :hook (prog-mode-hook . highlight-numbers-mode))
+    (leaf highlight-escape-sequences
+      :doc "Highlight escape sequences"
+      :url "https://github.com/dgutov/highlight-escape-sequences"
+      :ensure t
+      :hook (prog-mode-hook . hes-mode)))
+  (leaf ignore-bell
+    :doc "Suppress beep"
+    :url "https://qiita.com/ongaeshi/items/696407fc6c42072add54"
+    :custom (ring-bell-function . 'ignore))
+  (leaf status-line
+    :config
+    (leaf which-function
+      :doc "Show current function name in status-line by which-function-mode"
+      :url "https://stackoverflow.com/questions/16985544/display-function-name-in-status-line"
+      :config (which-function-mode 1))
+    (leaf column-number
+      :doc "Show column number in mode-line"
+      :global-minor-mode column-number-mode)
+    (leaf line-nubmer
+      :config (global-display-line-numbers-mode)))
+  )
+
+(leaf browser
+  :config
+  (leaf ace-link
+    :doc "Quickly follow links, for eww"
+    :url "https://github.com/abo-abo/ace-link"
+    :ensure t
+    :after avy
+    :config (ace-link-setup-default))
+  (leaf background-color
+    :url "https://futurismo.biz/archives/2950#%E8%83%8C%E6%99%AF%E8%89%B2%E3%81%AE%E8%A8%AD%E5%AE%9A"
+    :defvar eww-disable-colorize
+    :defun shr-colorize-region--disable
+    :config
+    (defvar eww-disable-colorize t)
+    (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+      (unless eww-disable-colorize
+        (funcall orig start end fg)))
+    (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+    (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable))
+  (leaf use-google-as-default-search-engine
+    :url "https://futurismo.biz/archives/2950#default-%E3%81%AE%E6%A4%9C%E7%B4%A2%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92-google-%E3%81%AB%E5%A4%89%E6%9B%B4"
+    :custom (eww-search-prefix . "https://www.google.co.jp/search?q=")))
+
+(provide 'init)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
