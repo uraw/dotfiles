@@ -418,7 +418,7 @@
     :doc "an opinionated pack of modern color-themes"
     :url "https://github.com/doomemacs/themes"
     :ensure t
-    :config (load-theme 'doom-monokai-pro t))
+    :config (load-theme 'doom-dark+ t))
   )
 
 (leaf frame-operation
