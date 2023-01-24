@@ -135,6 +135,13 @@
            (add-to-list 'exec-path "/home/linuxbrew/bin"))))
   (leaf suppress-cl-deprecated-message
     :custom (byte-compile-warnings '(not cl-functions obsolete)))
+  (leaf gcmh
+    :doc "the Garbage Collector Magic Hack"
+    :url "https://gitlab.com/koral/gcmh"
+    :blackout t
+    :ensure t
+    :custom (gcmh-verbose . t)
+    :config (gcmh-mode 1))
   )
 
 (leaf completion
