@@ -613,15 +613,12 @@
     :doc "Minor mode for visual feedback on some operations."
     :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
     :ensure t)
+  (leaf *whitespace-trailing
+    :custom (show-trailing-whitespace . t))
   (leaf whitespace-mode
     :doc "Visualize whitespace with whitespace-mode"
-    :tag "need-debug"
     :custom
-                                        ;(whitespace-face . (face trailing tabs spaces empty))
-    (whitespace-line-column . 1000000)
-    :hook
-    (prog-mode-hook . whitespace-mode)
-    (before-save-hook . whitespace-cleanup))
+    (whitespace-line-column . 1000000))
   (leaf symbol-overlay
     :doc "Highlight symbols with keymap-enabled overlays"
     :url "https://github.com/wolray/symbol-overlay/"
