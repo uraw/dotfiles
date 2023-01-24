@@ -303,7 +303,10 @@
       :custom (helm-display-function . #'display-buffer)
       :defvar popwin:special-display-config
       :config
-      (push '("helm" :regexp t :height 0.3) popwin:special-display-config)))
+      (push '("helm" :regexp t :height 0.3) popwin:special-display-config))
+    (push '("*xref*") popwin:special-display-config)
+    (push '("*Warnings*") popwin:special-display-config)
+    )
   (leaf y-or-n-p
     :doc "Use y/n instead of yes/no"
     :config
