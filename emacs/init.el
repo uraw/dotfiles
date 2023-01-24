@@ -616,6 +616,7 @@
     :doc "Minor mode for visual feedback on some operations."
     :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
     :ensure t
+    :blackout t
     :global-minor-mode volatile-highlights-mode
     )
   (leaf *whitespace-trailing
@@ -628,6 +629,7 @@
     :doc "Highlight symbols with keymap-enabled overlays"
     :url "https://github.com/wolray/symbol-overlay/"
     :ensure t
+    :blackout t
     :hook (prog-mode-hook . symbol-overlay-mode))
   (leaf highlight
     :config
