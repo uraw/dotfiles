@@ -612,7 +612,9 @@
   (leaf volatile-highlights
     :doc "Minor mode for visual feedback on some operations."
     :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
-    :ensure t)
+    :ensure t
+    :global-minor-mode volatile-highlights-mode
+    )
   (leaf *whitespace-trailing
     :custom (show-trailing-whitespace . t))
   (leaf whitespace-mode
