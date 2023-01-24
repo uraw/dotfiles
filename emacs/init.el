@@ -656,6 +656,12 @@
       :global-minor-mode column-number-mode)
     (leaf line-nubmer
       :config (global-display-line-numbers-mode)))
+  (leaf beacon
+    :doc "Highlight the cursor whenever the window scrolls"
+    :url "https://github.com/Malabarba/beacon"
+    :ensure t
+    :blackout t
+    :global-minor-mode beacon-mode)
   )
 
 (leaf browser
