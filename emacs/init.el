@@ -35,20 +35,16 @@
 ;; My leaves
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(leaf tools-for-leaf
-  :config
-  (leaf macrostep
-    :ensure t
-    :bind ("C-c e" . macrostep-expand))
-  (leaf leaf-convert
-    :ensure t)
-  (leaf leaf-tree
-    :ensure t
-    :custom
-    (imenu-list-size . 30)
-    (imenu-list-position . 'left))
-  )
-
+(leaf macrostep
+  :ensure t
+  :bind ("C-c e" . macrostep-expand))
+(leaf leaf-convert
+  :ensure t)
+(leaf leaf-tree
+  :ensure t
+  :custom
+  (imenu-list-size . 30)
+  (imenu-list-position . 'left))
 (leaf cus-edit
   :doc "divide cusomizes that emacs try to add init.el, into custom.el"
   :url "https://zenn.dev/zenwerk/scraps/b1280f66c8d11a"
@@ -411,15 +407,6 @@
     :bind ("<help> M" . discover-my-major))
   )
 
-(leaf theme
-  :config
-  (leaf doom-themes
-    :doc "an opinionated pack of modern color-themes"
-    :url "https://github.com/doomemacs/themes"
-    :ensure t
-    :config (load-theme 'doom-dark+ t))
-  )
-
 (leaf frame-operation
   :config
   (leaf frame-resize-way
@@ -555,7 +542,8 @@
   :config
   (leaf recentf
     :doc "setup a menu of recently opened files"
-    :url "https://tomoya.hatenadiary.org/entry/20110217/1297928222" "https://qiita.com/tadsan/items/68b53c2b0e8bb87a78d7"
+    :url ("https://tomoya.hatenadiary.org/entry/20110217/1297928222"
+          "https://qiita.com/tadsan/items/68b53c2b0e8bb87a78d7")
     :config (recentf-mode 1)
     :custom
     (recentf-max-saved-items . 2000) ;; Keep latest 2000 files up
@@ -579,12 +567,18 @@
 
 (leaf appearance
   :config
+  (leaf theme
+    :config
+    (leaf doom-themes
+      :doc "an opinionated pack of modern color-themes"
+      :url "https://github.com/doomemacs/themes"
+      :ensure t
+      :config (load-theme 'doom-dark+ t))
+    )
   (leaf hide-menu-bar
     :doc "Hide menu bar when emacs running in window mode"
-    :config
-    (if window-system
-        (menu-bar-mode 1)
-      (menu-bar-mode -1)))
+    :when window-system
+    :config (menu-bar-mode -1))
   (leaf highlight-current-line
     :doc "Hilight current line"
     :url "http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035"
