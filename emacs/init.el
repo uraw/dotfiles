@@ -32,6 +32,13 @@
 ;; </leaf-install-code>
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; My snippet
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defconst IS-MAC (eq system-type 'darwin))
+(defconst IS-LINUX (eq system-type 'gnu/linux))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; My leaves
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -116,6 +123,13 @@
 
 (leaf system
   :config
+  (leaf exec-path-for-brew
+    :url "https://blog.kyanny.me/entry/2014/09/12/135629"
+    :config
+    (cond (IS-MAC
+           (add-to-list 'exec-path "/opt/homebrew/bin")))
+    (cond (IS-LINUX
+           (add-to-list 'exec-path "/home/linuxbrew/bin"))))
   (leaf exec-path-from-shell
     :doc "Get environment variables such as $PATH from the shell"
     :url "https://github.com/purcell/exec-path-from-shell"
