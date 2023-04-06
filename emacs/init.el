@@ -525,9 +525,12 @@
   (leaf kill-whole-line
     :doc "C-k kill whole line at once"
     :custom (kill-whole-line . t))
-  (leaf electric
-    :doc "Insert automatic paren, quote"
-    :global-minor-mode electric-pair-mode)
+  (leaf smartparens
+    :doc "Parens pairs and tries to be smart"
+    :url "https://github.com/Fuco1/smartparens"
+    :ensure t
+    :global-minor-mode smartparens-global-mode
+    )
   (leaf delsel
     :doc "delete selection if you insert"
     :global-minor-mode delete-selection-mode)
