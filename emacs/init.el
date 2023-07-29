@@ -43,11 +43,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (leaf macrostep
+  :url "https://github.com/joddie/macrostep"
   :ensure t
   :bind ("C-c e" . macrostep-expand))
 (leaf leaf-convert
+  :url "https://github.com/conao3/leaf-convert.el"
   :ensure t)
 (leaf leaf-tree
+  :url "https://github.com/conao3/leaf-tree.el"
   :ensure t
   :custom
   (imenu-list-size . 30)
@@ -158,7 +161,6 @@
           "https://github.com/company-mode/company-mode/issues/227"
           "https://tarao.hatenablog.com/entry/20150221/1424518030#tips-byte-compilation")
     :ensure t
-    :blackout t
     :bind ((:company-active-map
             ("M-n" . nil)
             ("M-p" . nil)
@@ -292,7 +294,6 @@
   (leaf which-key
     :doc "Display available keybindings in popup"
     :url "https://github.com/justbur/emacs-which-key"
-    :blackout t
     :ensure t
     :global-minor-mode which-key-mode
     :custom
@@ -494,7 +495,6 @@
     :doc "Repeated detection and execution of key operation"
     :url "https://github.com/emacs-jp/dmacro"
     :ensure t
-    :blackout t
     :custom `((dmacro-key . ,(kbd "C-S-e")))
     :global-minor-mode global-dmacro-mode)
   (leaf undo
@@ -543,7 +543,6 @@
     :url "https://ayatakesi.github.io/lispref/27.2/html/Text-Quoting-Style.html"
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
-    :blackout t
     :hook (prog-mode-hook . hs-minor-mode)
     :bind ("C-c TAB" . hs-toggle-hiding))
   (leaf edit-indirect
@@ -590,9 +589,11 @@
       :config (load-theme 'doom-dark+ t))
     )
   (leaf hide-menu-bar
-    :doc "Hide menu bar when emacs running in window mode"
-    :when window-system
+    :doc "Hide menu bar"
     :config (menu-bar-mode -1))
+  (leaf hide-tool-bar
+    :doc "Hide tool bar"
+    :config (tool-bar-mode -1))
   (leaf highlight-current-line
     :doc "Hilight current line"
     :url "http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035"
@@ -612,7 +613,7 @@
   (leaf enable-go-address-mode
     :global-minor-mode global-goto-address-mode)
   (leaf hide-password
-    :doc Hide password on shell-mode
+    :doc "Hide password on shell-mode"
     :hook (comint-output-filter-functions . comint-watch-for-password-prompt))
   (leaf ansi-color
     :doc "Use same coloring as commandline by handling escape sequence in shell-mode"
@@ -623,7 +624,6 @@
     :doc "Minor mode for visual feedback on some operations."
     :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
     :ensure t
-    :blackout t
     :global-minor-mode volatile-highlights-mode
     )
   (leaf *whitespace-trailing
@@ -636,7 +636,6 @@
     :doc "Highlight symbols with keymap-enabled overlays"
     :url "https://github.com/wolray/symbol-overlay/"
     :ensure t
-    :blackout t
     :hook (prog-mode-hook . symbol-overlay-mode))
   (leaf highlight
     :config
@@ -669,7 +668,6 @@
     :doc "Highlight the cursor whenever the window scrolls"
     :url "https://github.com/Malabarba/beacon"
     :ensure t
-    :blackout t
     :global-minor-mode beacon-mode)
   )
 
