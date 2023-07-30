@@ -147,6 +147,9 @@
     :ensure t
     :custom (gcmh-verbose . t)
     :config (gcmh-mode 1))
+  (leaf savehist-mode
+    :url "http://emacs.rubikitch.com/savehist/"
+    :config (savehist-mode 1))
   )
 
 (leaf completion
