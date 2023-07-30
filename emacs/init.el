@@ -147,7 +147,6 @@
   (leaf gcmh
     :doc "the Garbage Collector Magic Hack"
     :url "https://gitlab.com/koral/gcmh"
-    :blackout t
     :ensure t
     :custom (gcmh-verbose . t)
     :config (gcmh-mode 1))
@@ -274,22 +273,13 @@
     :doc "Visual Popup User Interface"
     :url "https://github.com/auto-complete/popup-el"
     :ensure t)
-  (leaf helm-core
-    :doc "Development files for Helm"
-    :url "https://emacs-helm.github.io/helm/"
-    :ensure t)
   (leaf helm
     :doc "Helm is an Emacs incremental and narrowing framework"
     :url ("https://emacs-helm.github.io/helm/"
           "https://qiita.com/jabberwocky0139/items/86df1d3108e147c69e2c")
     :ensure t
     :bind
-    ("C-x C-f"  . helm-find-files)
-    ("M-y"      . helm-show-kill-ring)
-    ("C-x t"    . helm-recentf)
     ("<help> w" . helm-man-woman) ;; https://www.ncaq.net/2017/11/02/
-    ("M-:"      . helm-eval-expression)
-    ("M-x"      . helm-M-x)
     )
   (leaf which-key
     :doc "Display available keybindings in popup"
@@ -305,12 +295,6 @@
     :ensure t
     :config
     (popwin-mode 1)
-    (leaf popwin-for-helm
-      :url "https://qiita.com/fujimotok/items/164cd80b89992eeb4efe"
-      :custom (helm-display-function . #'display-buffer)
-      :defvar popwin:special-display-config
-      :config
-      (push '("helm" :regexp t :height 0.3) popwin:special-display-config))
     (push '("*xref*") popwin:special-display-config)
     (push '("*Warnings*") popwin:special-display-config)
     )
@@ -318,12 +302,39 @@
     :doc "Use y/n instead of yes/no"
     :config
     (defalias 'yes-or-no-p 'y-or-n-p))
-  (leaf helm-rg
-    :doc "a helm interface to ripgrep"
-    :url "https://github.com/cosmicexplorer/helm-rg"
+  (leaf vertico
+    :url "https://github.com/minad/vertico/"
     :ensure t
-    :after helm
-    :bind ("C-x a" . helm-rg))
+    :added "2023-07-28"
+    :custom
+    (vertico-count . 20)
+    (vertico-cycle . t)
+    :init (vertico-mode)
+    :config
+    (leaf vertico-directory
+      :url "https://github.com/katsusuke/.emacs.d/commit/159cbf64c46679106c1d45eb223d0380944f3ce3#commitcomment-66343609"
+      :bind (:vertico-map ("C-l" . vertico-directory-up)))
+    (leaf consult
+      :url "https://github.com/minad/consult"
+      :ensure t
+      :bind
+      ("M-g"   . consult-goto-line)
+      ("C-x b" . consult-buffer)
+      ("M-y"   . consult-yank-from-kill-ring)
+      ("C-M-s" . consult-line)
+      ("C-x t" . consult-recent-file)
+      )
+    (leaf orderless
+      :url "https://github.com/oantolin/orderless"
+      :ensure t
+      :custom
+      (completion-styles . '(orderless basic))
+      (completion-category-defaults . nil)
+      (completion-category-overrides '((file (styles partial-completion)))))
+    )
+  (leaf marginalia
+    :url "https://github.com/minad/marginalia"
+    :ensure t)
   )
 
 (leaf language
@@ -465,9 +476,6 @@
     :bind
     ("M-\\" . just-one-space)
     ("M-¥"  . just-one-space))
-  (leaf switch-buffer
-    :bind
-    ("C-x b" . helm-mini))
   (leaf new-line-indentation
     :doc "New line indentation"
     :bind
