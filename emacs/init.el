@@ -337,7 +337,9 @@
     )
   (leaf marginalia
     :url "https://github.com/minad/marginalia"
-    :ensure t)
+    :ensure t
+    :hook (emacs-startup-hook . marginalia-mode)
+    :bind (:minibuffer-local-map ("M-S-a" . marginalia-cycle)))
   )
 
 (leaf language
