@@ -36,7 +36,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defconst IS-MAC (eq system-type 'darwin))
 (defconst IS-LINUX (eq system-type 'gnu/linux))
-
+(defconst IS-WINDOW-SYSTEM (not (null (memq window-system '(mac ns x)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; My leaves
@@ -133,10 +133,11 @@
   (leaf exec-path-from-shell
     :doc "Get environment variables such as $PATH from the shell"
     :url "https://github.com/purcell/exec-path-from-shell"
+    :when IS-WINDOW-SYSTEM
     :custom
     (exec-path-from-shell-check-startup-files . nil)
     (exec-path-from-shell-arguments . nil)
-    (exec-path-from-shell-variables . '("PATH" "SHELL" "http_proxy" "https_proxy"))
+    (exec-path-from-shell-variables . '("PATH" "SHELL"))
     :config (exec-path-from-shell-initialize))
   (leaf suppress-cl-deprecated-message
     :custom (byte-compile-warnings '(not cl-functions obsolete)))
