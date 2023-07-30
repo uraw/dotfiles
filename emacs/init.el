@@ -273,7 +273,7 @@
 (leaf user-interface
   :config
   (leaf popup
-    :doc "Visual Popup User Interface"
+    :doc "Visual Popup User Interface, such as popup tooltip and popup menus"
     :url "https://github.com/auto-complete/popup-el"
     :ensure t)
   (leaf which-key
