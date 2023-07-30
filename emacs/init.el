@@ -94,10 +94,7 @@
      '(markdown-header-face-5 ((t (:foreground "color-219" :weight bold :height 1.0))))
      '(markdown-header-face-6 ((t (:foreground "color-244" :weight bold))))
      '(markdown-list-face ((t (:foreground "color-135"))))
-     )
-    (leaf disable-company-mode-on-markdown-mode
-      :doc "disable company-mode on markdown-mode"
-      :hook (markdown-mode-hook . (lambda () (company-mode -1)))))
+     ))
   (leaf yaml-mode
     :doc "Major mode for editing YAML files"
     :url "https://github.com/yoshiki/yaml-mode"
@@ -154,66 +151,70 @@
 
 (leaf completion
   :config
-  (leaf company
-    :doc "Modular text completion framework"
-    :url ("http://company-mode.github.io/"
-          "https://github.com/company-mode/company-mode/issues/227"
-          "https://tarao.hatenablog.com/entry/20150221/1424518030#tips-byte-compilation")
+  (leaf popon
+    :url "https://codeberg.org/akib/emacs-popon.git"
+    :unless (display-graphic-p)
+    :el-get (emacs-popon :url "https://codeberg.org/akib/emacs-popon.git"))
+  (leaf corfu-terminal
+    :url "https://codeberg.org/akib/emacs-corfu-terminal.git"
+    :after corfu
+    :unless (display-graphic-p)
+    :el-get (emacs-corfu-terminal :url "https://codeberg.org/akib/emacs-corfu-terminal.git")
+    :config (corfu-terminal-mode 1))
+  (leaf corfu
+    :url "https://github.com/minad/corfu"
     :ensure t
-    :bind ((:company-active-map
-            ("M-n" . nil)
-            ("M-p" . nil)
-            ("C-s" . company-filter-candidates)
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)
-            ("<tab>" . company-complete-selection))
-           (:company-search-map
-            ("C-n" . company-select-next)
-            ("C-p" . company-select-previous)))
+    :init (global-corfu-mode)
     :custom
-    (company-idle-delay . 0)
-    (company-minimum-prefix-length . 2)
-    (company-select-wrap-around . t)
-    :config
-    (leaf company-face
-      :url "https://qiita.com/syohex/items/8d21d7422f14e9b53b17"
-      :config
-      (set-face-attribute 'company-tooltip nil
-                          :foreground "black"
-                          :background "lightgrey")
-      (set-face-attribute 'company-tooltip-common nil
-                          :foreground "black"
-                          :background "lightgrey")
-      (set-face-attribute 'company-tooltip-common-selection nil
-                          :foreground "white"
-                          :background "steelblue")
-      (set-face-attribute 'company-tooltip-selection nil
-                          :foreground "poblack"
-                          :background "steelblue")
-      (set-face-attribute 'company-preview-common nil
-                          :background nil
-                          :foreground "lightgrey"
-                          :underline t)
-      (set-face-attribute 'company-scrollbar-fg nil
-                          :background "orange")
-      (set-face-attribute 'company-scrollbar-bg nil
-                          :background "gray40"))
-    :global-minor-mode global-company-mode)
-  (leaf company-statistics
-    :doc "Sort candidates using completion history"
-    :url "https://github.com/company-mode/company-statistics"
+    (corfu-cycle . t)  ; cycle list
+    (corfu-auto . t) ; automatically start completion
+    (corfu-count . 30)
+    (corfu-preselect . 'prompt)
+    (corfu-auto-prefix . 1)
+    (corfu-auto-delay . 0)
+    (completion-cycle-threshold . 3) ; TAB cycle if there are only few candidates
+    (tab-always-indent . 'complete)
+    :bind (:corfu-map
+           ("RET" . nil)
+           ("<return>" . nil)
+           ("TAB" . corfu-insert)
+           ("<tab>" . corfu-insert)
+           )
+    )
+  (leaf cape
+    :url "https://github.com/minad/cape"
     :ensure t
-    :after company
-    :require t
-    :config (company-statistics-mode))
-  (leaf company-c-headers
-    :doc "Company mode backend for C/C++ header files"
-    :url "https://emacs-jp.github.io/tips/emacs-in-2020"
-    :ensure t
-    :after company
-    :defvar company-backends
-    :config
-    (add-to-list 'company-backends 'company-c-headers))
+    :bind (("C-c p p" . completion-at-point)
+         ("C-c p t" . complete-tag)
+         ("C-c p d" . cape-dabbrev)
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-symbol)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p \\" . cape-tex)
+         ("C-c p _" . cape-tex)
+         ("C-c p ^" . cape-tex)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345))
+    :init
+    ;; Add `completion-at-point-functions', used by `completion-at-point'.
+    ;; NOTE: The order matters!
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+    ;;(add-to-list 'completion-at-point-functions #'cape-history)
+    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+    ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-line)
+    )
   )
 
 (leaf python
@@ -225,7 +226,7 @@
     :doc "Emacs Python Development Environment"
     :url "https://github.com/jorgenschaefer/elpy"
     :ensure t
-    :after company highlight-indentation pyvenv yasnippet
+    :after highlight-indentation pyvenv yasnippet
     :defer-config
     (leaf elpy-customize
       :custom
@@ -237,8 +238,7 @@
       (custom-set-variables
        '(elpy-modules
          (quote
-          (elpy-module-company
-           elpy-module-eldoc
+          (elpy-module-eldoc
            elpy-module-flymake
            elpy-module-folding
            elpy-module-pyvenv
