@@ -133,7 +133,6 @@
   (leaf exec-path-from-shell
     :doc "Get environment variables such as $PATH from the shell"
     :url "https://github.com/purcell/exec-path-from-shell"
-    :ensure t
     :custom
     (exec-path-from-shell-check-startup-files . nil)
     (exec-path-from-shell-arguments . nil)
@@ -276,14 +275,6 @@
     :doc "Visual Popup User Interface"
     :url "https://github.com/auto-complete/popup-el"
     :ensure t)
-  (leaf helm
-    :doc "Helm is an Emacs incremental and narrowing framework"
-    :url ("https://emacs-helm.github.io/helm/"
-          "https://qiita.com/jabberwocky0139/items/86df1d3108e147c69e2c")
-    :ensure t
-    :bind
-    ("<help> w" . helm-man-woman) ;; https://www.ncaq.net/2017/11/02/
-    )
   (leaf which-key
     :doc "Display available keybindings in popup"
     :url "https://github.com/justbur/emacs-which-key"
@@ -624,6 +615,7 @@
     :doc "Disable Startup message buffer"
     :custom (inhibit-startup-message . t))
   (leaf enable-go-address-mode
+    :doc "Highlight all the URLs in the buffer and turns them into clickable buttons"
     :global-minor-mode global-goto-address-mode)
   (leaf hide-password
     :doc "Hide password on shell-mode"
