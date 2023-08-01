@@ -42,23 +42,25 @@
 ;; My leaves
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(leaf macrostep
-  :url "https://github.com/joddie/macrostep"
-  :ensure t
-  :bind ("C-c e" . macrostep-expand))
-(leaf leaf-convert
-  :url "https://github.com/conao3/leaf-convert.el"
-  :ensure t)
-(leaf leaf-tree
-  :url "https://github.com/conao3/leaf-tree.el"
-  :ensure t
-  :custom
-  (imenu-list-size . 30)
-  (imenu-list-position . 'left))
-(leaf cus-edit
-  :doc "divide cusomizes that emacs try to add init.el, into custom.el"
-  :url "https://zenn.dev/zenwerk/scraps/b1280f66c8d11a"
-  :custom (custom-file . '(locate-user-emacs-file "custom.el"))
+(leaf leaf-utilities
+  (leaf macrostep
+    :url "https://github.com/joddie/macrostep"
+    :ensure t
+    :bind ("C-c e" . macrostep-expand))
+  (leaf leaf-convert
+    :url "https://github.com/conao3/leaf-convert.el"
+    :ensure t)
+  (leaf leaf-tree
+    :url "https://github.com/conao3/leaf-tree.el"
+    :ensure t
+    :custom
+    (imenu-list-size . 30)
+    (imenu-list-position . 'left))
+  (leaf cus-edit
+    :doc "divide cusomizes that emacs try to add init.el, into custom.el"
+    :url "https://zenn.dev/zenwerk/scraps/b1280f66c8d11a"
+    :custom (custom-file . '(locate-user-emacs-file "custom.el"))
+    )
   )
 
 (leaf major-modes
@@ -220,38 +222,41 @@
     )
   )
 
-(leaf python
-  :custom
-  (python-indent-guess-indent-offset . nil)
-  (python-indent . 4)
-  :config
-  (leaf elpy
-    :doc "Emacs Python Development Environment"
-    :url "https://github.com/jorgenschaefer/elpy"
-    :ensure t
-    :after highlight-indentation pyvenv yasnippet
-    :defer-config
-    (leaf elpy-customize
-      :custom
-      (python-shell-interpreter . "ipython3")
-      (python-shell-interpreter-args . "-i")
-      (elpy-rpc-python-command . "python3")
-      (python-check-command . "pflake8")
-      :config
-      (custom-set-variables
-       '(elpy-modules
-         (quote
-          (elpy-module-eldoc
-           elpy-module-flymake
-           elpy-module-folding
-           elpy-module-pyvenv
-           elpy-module-django
-           elpy-module-sane-defaults))))))
-  (leaf py-isort
-    :doc "Use isort to sort the imports in a Python buffer"
-    :url "http://paetzke.me/project/py-isort.el"
-    :ensure t
-    :hook (before-save-hook . py-isort-before-save))
+(leaf programing
+  (leaf lsp)
+  (leaf python
+    :custom
+    (python-indent-guess-indent-offset . nil)
+    (python-indent . 4)
+    :config
+    (leaf elpy
+      :doc "Emacs Python Development Environment"
+      :url "https://github.com/jorgenschaefer/elpy"
+      :ensure t
+      :after highlight-indentation pyvenv yasnippet
+      :defer-config
+      (leaf elpy-customize
+        :custom
+        (python-shell-interpreter . "ipython3")
+        (python-shell-interpreter-args . "-i")
+        (elpy-rpc-python-command . "python3")
+        (python-check-command . "pflake8")
+        :config
+        (custom-set-variables
+         '(elpy-modules
+           (quote
+            (elpy-module-eldoc
+             elpy-module-flymake
+             elpy-module-folding
+             elpy-module-pyvenv
+             elpy-module-django
+             elpy-module-sane-defaults))))))
+    (leaf py-isort
+      :doc "Use isort to sort the imports in a Python buffer"
+      :url "http://paetzke.me/project/py-isort.el"
+      :ensure t
+      :hook (before-save-hook . py-isort-before-save))
+    )
   )
 
 (leaf syntax-check
