@@ -318,6 +318,9 @@
       ("M-y"   . consult-yank-from-kill-ring)
       ("C-M-s" . consult-line)
       ("C-x t" . consult-recent-file)
+      :custom
+      (xref-show-xrefs-function . #'consult-xref)
+      (xref-show-definitions-function . #'consult-xref)
       )
     (leaf orderless
       :url "https://github.com/oantolin/orderless"
@@ -400,10 +403,12 @@
     :doc "Jump to definition for 50+ languages without configuration"
     :url "https://github.com/jacktasia/dumb-jump"
     :ensure t
+    :config (dumb-jump-mode)
     :custom
-    (dumb-jump-selector 'helm)
-    (dumb-jump-force-searcher 'rg)
-    :hook (xref-backend-functions . dumb-jump-xref-activate))
+    (dumb-jump-force-searcher . 'rg)
+    (dumb-jump-prefere-searcher . 'rg)
+    :hook (xref-backend-functions . dumb-jump-xref-activate)
+    )
   )
 
 (leaf indentation
