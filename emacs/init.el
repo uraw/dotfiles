@@ -508,13 +508,6 @@
     (undo-strong-limit . 13000000))
   (leaf delete-rectangle
     :bind ("C-c :" . delete-rectangle))
-  (leaf mwim
-    :doc "Switch between the beginning/end of line or code"
-    :url "https://github.com/alezost/mwim.el"
-    :ensure t
-    :bind
-    ("C-a" . mwim-beginning)
-    ("C-e" . mwim-end))
   (leaf scroll-line-by-line
     :url ("http://www.emacswiki.org/emacs/SmoothScrolling"
           "https://stackoverflow.com/questions/1128927/how-to-scroll-line-by-line-in-gnu-emacs")
