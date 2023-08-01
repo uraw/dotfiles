@@ -85,7 +85,7 @@ end
 ################################################################################
 # Emacs
 ################################################################################
-set -Ux EDITOR "emacs -nw"
+set -Ux EDITOR "emacs"
 function emacs
     start-emacs
     sleep 0.3
@@ -103,7 +103,7 @@ function start-emacs
 end
 
 function kill-emacs
-    if test (ps aux | grep -i emacs | grep daemon | wc -l) != 0
+    if test (ps aux | grep -i emacs | grep daemon | wc -l) -ne 0
         echo Killing emacs daemon
         emacsclient -e '(kill-emacs)'
         echo Done
