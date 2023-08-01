@@ -313,7 +313,6 @@
       :url "https://github.com/minad/consult"
       :ensure t
       :bind
-      ("M-g"   . consult-goto-line)
       ("C-x b" . consult-buffer)
       ("M-y"   . consult-yank-from-kill-ring)
       ("C-M-s" . consult-line)
@@ -552,6 +551,23 @@
     :doc "Edit regions in separate buffers"
     :url "https://github.com/Fanael/edit-indirect"
     :ensure t)
+  (leaf migemo
+    :doc "Japanese incremental search through dynamic pattern expansion"
+    :url "https://github.com/emacs-jp/migemo"
+    :ensure t
+    :custom
+    (migemo-command . "cmigemo")
+    (migemo-options . '("-q" "--emacs"))
+    (migemo-directory . "/opt/homebrew/Cellar/cmigemo/20110227/share/migemo/utf-8/migemo-dict")
+    (migemo-user-dictionary . nil)
+    (migemo-regex-dictionary . nil)
+    (migemo-coding-system . 'utf-8-unix)
+    (migemo-use-pattern-alist . t)
+    (migemo-use-frequent-pattern-alist . t)
+    (migemo-pattern-alist-length . 1024)
+    :config
+    (load-library "migemo")
+    (migemo-init))
   )
 
 (leaf history
@@ -671,7 +687,7 @@
     :global-minor-mode beacon-mode)
   )
 
-(leaf browser
+(leaf browsing
   :config
   (leaf ace-link
     :doc "Quickly follow links, for eww"
