@@ -627,10 +627,6 @@
     )
   (leaf *whitespace-trailing
     :custom (show-trailing-whitespace . t))
-  (leaf whitespace-mode
-    :doc "Visualize whitespace with whitespace-mode"
-    :custom
-    (whitespace-line-column . 1000000))
   (leaf symbol-overlay
     :doc "Highlight symbols with keymap-enabled overlays"
     :url "https://github.com/wolray/symbol-overlay/"
