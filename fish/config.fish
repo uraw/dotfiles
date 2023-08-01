@@ -179,6 +179,12 @@ if command -sq batcat
     alias bat batcat
 end
 
+################################################################################
+# Node
+################################################################################
+set -gx VOLTA_HOME "$HOME/.volta"
+set -gx PATH "$VOLTA_HOME/bin" $PATH
+
 
 ################################################################################
 # Local settings  (must be at the bottom of this file!)
