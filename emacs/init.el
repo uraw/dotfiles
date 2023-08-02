@@ -723,6 +723,14 @@
   (leaf blackout-settings
     :config
     (blackout 'eldoc-mode))
+  (leaf minimap
+    :ensure t
+    :when IS-WINDOW-SYSTEM
+    :custom
+    (minimap-window-location . 'right)
+    (minimap-update-delay . 0.01)
+    (minimap-minimum-width . 20)
+    :bind ("M-m" . minimap-mode))
   )
 
 (leaf browsing
