@@ -266,6 +266,7 @@
       :doc "On-the-fly syntax checking"
       :url "http://www.flycheck.org"
       :ensure t
+      :hook prog-mode-hook
       :bind
       ("M-n" . flycheck-next-error)
       ("M-p" . flycheck-previous-error)
@@ -281,10 +282,10 @@
       (leaf flycheck-inline
         :ensure t
         :blackout t
-        :hook (flycheck-mode-hook . flycheck-inline-mode))
+        :hook flycheck-mode-hook)
       (leaf flycheck-color-mode-line
         :ensure t
-        :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
+        :hook flycheck-mode-hook)
       )
     )
   (leaf tag-jump
