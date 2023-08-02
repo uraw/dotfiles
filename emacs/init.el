@@ -449,6 +449,10 @@
     :ensure t
     :after compat git-commit magit-section with-editor
     :bind ("C-x g" . magit-status))
+  (leaf git-gutter
+    :url "https://github.com/emacsorphanage/git-gutter"
+    :hook (prog-mode-hook . git-gutter-mode)
+    :ensure t)
   )
 
 
