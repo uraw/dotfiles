@@ -321,12 +321,12 @@
       :url "https://github.com/wolray/symbol-overlay/"
       :ensure t
       :blackout t
-      :hook (prog-mode-hook . symbol-overlay-mode))
+      :hook prog-mode-hook)
     (leaf highlight-numbers
       :doc "Highlight numbers in source code"
       :url "https://github.com/Fanael/highlight-numbers"
       :ensure t
-      :hook (prog-mode-hook . highlight-numbers-mode))
+      :hook prog-mode-hook)
     (leaf highlight-escape-sequences
       :doc "Highlight escape sequences"
       :url "https://github.com/dgutov/highlight-escape-sequences"
@@ -400,7 +400,7 @@
   (leaf marginalia
     :url "https://github.com/minad/marginalia"
     :ensure t
-    :hook (emacs-startup-hook . marginalia-mode)
+    :hook emacs-startup-hook
     :bind (:minibuffer-local-map ("M-S-a" . marginalia-cycle)))
   )
 
@@ -464,7 +464,7 @@
     :bind ("C-x g" . magit-status))
   (leaf git-gutter
     :url "https://github.com/emacsorphanage/git-gutter"
-    :hook (prog-mode-hook . git-gutter-mode)
+    :hook prog-mode-hook
     :ensure t
     :blackout t)
   )
@@ -592,7 +592,7 @@
     :url "https://ayatakesi.github.io/lispref/27.2/html/Text-Quoting-Style.html"
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
-    :hook (prog-mode-hook . hs-minor-mode)
+    :hook prog-mode-hook
     :bind ("C-c TAB" . hs-toggle-hiding)
     :blackout t
     )
