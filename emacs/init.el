@@ -383,7 +383,7 @@
       :bind
       ("C-x b" . consult-buffer)
       ("M-y"   . consult-yank-from-kill-ring)
-      ("C-M-s" . consult-line)
+      ("C-S-s" . consult-line)
       ("C-x t" . consult-recent-file)
       :custom
       (xref-show-xrefs-function . #'consult-xref)
