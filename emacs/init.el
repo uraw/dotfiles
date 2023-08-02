@@ -136,6 +136,7 @@
     :doc "Get environment variables such as $PATH from the shell"
     :url "https://github.com/purcell/exec-path-from-shell"
     :when IS-WINDOW-SYSTEM
+    :ensure t
     :custom
     (exec-path-from-shell-check-startup-files . nil)
     (exec-path-from-shell-arguments . nil)
@@ -257,22 +258,68 @@
       :ensure t
       :hook (before-save-hook . py-isort-before-save))
     )
-  )
-
-(leaf syntax-check
-  :config
-  (leaf flycheck
-    :doc "On-the-fly syntax checking"
-    :url "http://www.flycheck.org"
-    :ensure t
-    :defer-config
-    (leaf disable-flycheck-for-emacs-lisp
-      :url "https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts"
+  (leaf syntax-check
+    :config
+    (leaf flycheck
+      :doc "On-the-fly syntax checking"
+      :url "http://www.flycheck.org"
+      :ensure t
+      :defer-config
+      (leaf disable-flycheck-for-emacs-lisp
+        :url "https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts"
+        :custom
+        (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
+      (leaf flycheck-for-python
+        :custom
+        (flycheck-python-flake8-executable . "pflake8")))
+    )
+  (leaf tag-jump
+    :config
+    (leaf dumb-jump
+      :doc "Jump to definition for 50+ languages without configuration"
+      :url "https://github.com/jacktasia/dumb-jump"
+      :ensure t
+      :config (dumb-jump-mode)
       :custom
-      (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
-    (leaf flycheck-for-python
+      (dumb-jump-force-searcher . 'rg)
+      (dumb-jump-prefere-searcher . 'rg)
+      :hook (xref-backend-functions . dumb-jump-xref-activate)
+      )
+    )
+  (leaf indentation
+    :config
+    (leaf fuzzy-format
+      :doc "select indent-tabs-mode and format code automatically."
+      :url "http://code.101000lab.org, http://trac.codecheck.in"
+      :el-get emacsmirror/fuzzy-format
+      :require t)
+    (leaf indent-with-4-spaces
+      :doc "indent with 4 spaces without tab"
       :custom
-      (flycheck-python-flake8-executable . "pflake8")))
+      (indent-tabs-mode . nil)
+      (tab-width . 4))
+    )
+  (leaf appearance
+    :config
+    (leaf symbol-overlay
+      :doc "Highlight symbols with keymap-enabled overlays"
+      :url "https://github.com/wolray/symbol-overlay/"
+      :ensure t
+      :blackout t
+      :hook (prog-mode-hook . symbol-overlay-mode))
+    (leaf highlight-numbers
+      :doc "Highlight numbers in source code"
+      :url "https://github.com/Fanael/highlight-numbers"
+      :ensure t
+      :hook (prog-mode-hook . highlight-numbers-mode))
+    (leaf highlight-escape-sequences
+      :doc "Highlight escape sequences"
+      :url "https://github.com/dgutov/highlight-escape-sequences"
+      :ensure t
+      :hook (prog-mode-hook . hes-mode))
+    (leaf whitespace-trailing
+      :custom (show-trailing-whitespace . t))
+    )
   )
 
 (leaf user-interface
@@ -401,33 +448,6 @@
     :bind ("C-x g" . magit-status))
   )
 
-(leaf tag-jump
-  :config
-  (leaf dumb-jump
-    :doc "Jump to definition for 50+ languages without configuration"
-    :url "https://github.com/jacktasia/dumb-jump"
-    :ensure t
-    :config (dumb-jump-mode)
-    :custom
-    (dumb-jump-force-searcher . 'rg)
-    (dumb-jump-prefere-searcher . 'rg)
-    :hook (xref-backend-functions . dumb-jump-xref-activate)
-    )
-  )
-
-(leaf indentation
-  :config
-  (leaf fuzzy-format
-    :doc "select indent-tabs-mode and format code automatically."
-    :url "http://code.101000lab.org, http://trac.codecheck.in"
-    :el-get emacsmirror/fuzzy-format
-    :require t)
-  (leaf indent-with-4-spaces
-    :doc "indent with 4 spaces without tab"
-    :custom
-    (indent-tabs-mode . nil)
-    (tab-width . 4))
-  )
 
 (leaf utility
   :config
@@ -546,7 +566,7 @@
     :doc "revert buffers when fiels on disk change"
     :custom (auto-revert-interval . 0.1)
     :global-minor-mode global-auto-revert-mode)
-  (leaf text-quote-straight
+  (leaf text-quoting-style-as-straight
     :url "https://ayatakesi.github.io/lispref/27.2/html/Text-Quoting-Style.html"
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
@@ -623,11 +643,11 @@
     :url "http://keisanbutsuriya.hateblo.jp/entry/2015/02/01/162035"
     :global-minor-mode global-hl-line-mode)
   (leaf font-face-for-darwin
-    :if (equal system-type 'darwin)
+    :if IS-MAC
     :config (set-face-attribute 'default nil
                                 :height 160
                                 :family "Monaco"))
-  (leaf paren
+  (leaf highlight-paren
     :doc "highlight matching paren"
     :custom (show-paren-delay . 0.1)
     :global-minor-mode show-paren-mode)
@@ -651,25 +671,6 @@
     :ensure t
     :global-minor-mode volatile-highlights-mode
     )
-  (leaf *whitespace-trailing
-    :custom (show-trailing-whitespace . t))
-  (leaf symbol-overlay
-    :doc "Highlight symbols with keymap-enabled overlays"
-    :url "https://github.com/wolray/symbol-overlay/"
-    :ensure t
-    :hook (prog-mode-hook . symbol-overlay-mode))
-  (leaf highlight
-    :config
-    (leaf highlight-numbers
-      :doc "Highlight numbers in source code"
-      :url "https://github.com/Fanael/highlight-numbers"
-      :ensure t
-      :hook (prog-mode-hook . highlight-numbers-mode))
-    (leaf highlight-escape-sequences
-      :doc "Highlight escape sequences"
-      :url "https://github.com/dgutov/highlight-escape-sequences"
-      :ensure t
-      :hook (prog-mode-hook . hes-mode)))
   (leaf ignore-bell
     :doc "Suppress beep"
     :url "https://qiita.com/ongaeshi/items/696407fc6c42072add54"
