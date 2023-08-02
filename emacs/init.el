@@ -591,11 +591,10 @@
   (leaf text-quoting-style-as-straight
     :url "https://ayatakesi.github.io/lispref/27.2/html/Text-Quoting-Style.html"
     :custom (text-quoting-style . 'straight))
-  (leaf hs-minor-mode
+  (leaf yafolding
+    :ensure t
     :hook prog-mode-hook
-    :bind ("C-c TAB" . hs-toggle-hiding)
-    :blackout t
-    )
+    :bind ("C-c TAB" . yafolding-toggle-element))
   (leaf edit-indirect
     :doc "Edit regions in separate buffers"
     :url "https://github.com/Fanael/edit-indirect"
