@@ -148,6 +148,7 @@
     :doc "the Garbage Collector Magic Hack"
     :url "https://gitlab.com/koral/gcmh"
     :ensure t
+    :blackout t
     :custom (gcmh-verbose . t)
     :config (gcmh-mode 1))
   (leaf savehist-mode
@@ -332,6 +333,7 @@
     :doc "Display available keybindings in popup"
     :url "https://github.com/justbur/emacs-which-key"
     :ensure t
+    :blackout t
     :global-minor-mode which-key-mode
     :custom
     (which-key-idle-delay . 0.4)
@@ -529,6 +531,7 @@
     :doc "Repeated detection and execution of key operation"
     :url "https://github.com/emacs-jp/dmacro"
     :ensure t
+    :blackout t
     :custom `((dmacro-key . ,(kbd "C-S-e")))
     :global-minor-mode global-dmacro-mode)
   (leaf undo
@@ -557,8 +560,8 @@
     :doc "Parens pairs and tries to be smart"
     :url "https://github.com/Fuco1/smartparens"
     :ensure t
-    :global-minor-mode smartparens-global-mode
-    )
+    :blackout t
+    :global-minor-mode smartparens-global-mode)
   (leaf delsel
     :doc "delete selection if you insert"
     :global-minor-mode delete-selection-mode)
@@ -571,7 +574,8 @@
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
     :hook (prog-mode-hook . hs-minor-mode)
-    :bind ("C-c TAB" . hs-toggle-hiding))
+    :bind ("C-c TAB" . hs-toggle-hiding)
+    :blackout t)
   (leaf edit-indirect
     :doc "Edit regions in separate buffers"
     :url "https://github.com/Fanael/edit-indirect"
@@ -673,6 +677,7 @@
     :url "http://www.emacswiki.org/emacs/download/volatile-highlights.el"
     :ensure t
     :global-minor-mode volatile-highlights-mode
+    :blackout t
     )
   (leaf ignore-bell
     :doc "Suppress beep"
