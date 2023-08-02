@@ -465,7 +465,8 @@
   (leaf git-gutter
     :url "https://github.com/emacsorphanage/git-gutter"
     :hook (prog-mode-hook . git-gutter-mode)
-    :ensure t)
+    :ensure t
+    :blackout t)
   )
 
 
@@ -592,7 +593,9 @@
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
     :hook (prog-mode-hook . hs-minor-mode)
-    :bind ("C-c TAB" . hs-toggle-hiding))
+    :bind ("C-c TAB" . hs-toggle-hiding)
+    :blackout t
+    )
   (leaf edit-indirect
     :doc "Edit regions in separate buffers"
     :url "https://github.com/Fanael/edit-indirect"
@@ -719,7 +722,6 @@
     :global-minor-mode beacon-mode)
   (leaf blackout-settings
     :config
-    (blackout 'hs-minor-mode)
     (blackout 'eldoc-mode))
   )
 
