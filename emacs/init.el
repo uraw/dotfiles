@@ -43,6 +43,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (leaf leaf-utilities
+  :config
   (leaf macrostep
     :url "https://github.com/joddie/macrostep"
     :ensure t
