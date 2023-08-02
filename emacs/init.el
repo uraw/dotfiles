@@ -654,6 +654,9 @@
   (leaf quiet-start
     :doc "Disable Startup message buffer"
     :custom (inhibit-startup-message . t))
+  (leaf rainbow-delimiters
+    :ensure t
+    :config (rainbow-delimiters-mode))
   (leaf enable-go-address-mode
     :doc "Highlight all the URLs in the buffer and turns them into clickable buttons"
     :global-minor-mode global-goto-address-mode)
