@@ -575,8 +575,7 @@
     :custom (text-quoting-style . 'straight))
   (leaf hs-minor-mode
     :hook (prog-mode-hook . hs-minor-mode)
-    :bind ("C-c TAB" . hs-toggle-hiding)
-    :blackout t)
+    :bind ("C-c TAB" . hs-toggle-hiding))
   (leaf edit-indirect
     :doc "Edit regions in separate buffers"
     :url "https://github.com/Fanael/edit-indirect"
@@ -699,7 +698,12 @@
     :doc "Highlight the cursor whenever the window scrolls"
     :url "https://github.com/Malabarba/beacon"
     :ensure t
+    :blackout t
     :global-minor-mode beacon-mode)
+  (leaf blackout-settings
+    :config
+    (blackout 'hs-minor-mode)
+    (blackout 'eldoc-mode))
   )
 
 (leaf browsing
