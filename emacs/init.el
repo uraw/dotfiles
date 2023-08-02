@@ -266,6 +266,9 @@
       :doc "On-the-fly syntax checking"
       :url "http://www.flycheck.org"
       :ensure t
+      :bind
+      ("M-n" . flycheck-next-error)
+      ("M-p" . flycheck-previous-error)
       :defer-config
       (leaf disable-flycheck-for-emacs-lisp
         :url "https://stackoverflow.com/questions/15552349/how-to-disable-flycheck-warning-while-editing-emacs-lisp-scripts"
@@ -273,7 +276,16 @@
         (flycheck-disabled-checkers . '(emacs-lisp-checkdoc)))
       (leaf flycheck-for-python
         :custom
-        (flycheck-python-flake8-executable . "pflake8")))
+        (flycheck-python-flake8-executable . "pflake8"))
+      :config
+      (leaf flycheck-inline
+        :ensure t
+        :blackout t
+        :hook (flycheck-mode-hook . flycheck-inline-mode))
+      (leaf flycheck-color-mode-line
+        :ensure t
+        :hook (flycheck-mode-hook . flycheck-color-mode-line-mode))
+      )
     )
   (leaf tag-jump
     :config
