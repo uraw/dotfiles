@@ -14,7 +14,7 @@ end
 # PATH
 ################################################################################
 fish_add_path ~/.local/bin
-fish_add_path /opt/homebrew/opt/openjdk/bin
+fish_add_path $HOMEBREW_PREFIX/opt/openjdk/bin
 
 
 ################################################################################
