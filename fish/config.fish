@@ -93,23 +93,32 @@ function emacs
     emacsclient -t $argv
 end
 
+function is-emacs-daemon-running
+    # Check if emacs daemon is running
+    # Return value
+    #   0 - emacs daemon is running
+    #   Non-zero - emacs daemon is not runnig
+    emacsclient -e "()" > /dev/null 2>&1
+    return $status
+end
+
 function start-emacs
-    if test (ps aux | grep -i emacs | grep daemon | wc -l) -eq 0
+    if is-emacs-daemon-running
+        echo Daemon already running
+    else
         echo Starting emacs daemon
         eval (whereis emacs | tr ' ' '\n' | grep bin | head -n 1) --daemon
         echo Done
-    else
-        echo Daemon already started
     end
 end
 
 function kill-emacs
-    if test (ps aux | grep -i emacs | grep daemon | wc -l) -ne 0
+    if is-emacs-daemon-running
         echo Killing emacs daemon
         emacsclient -e '(kill-emacs)'
         echo Done
     else
-        echo No daemon started
+        echo No daemon running
     end
 end
 
