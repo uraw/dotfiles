@@ -376,6 +376,7 @@
     :config
     (leaf vertico-directory
       :url "https://github.com/katsusuke/.emacs.d/commit/159cbf64c46679106c1d45eb223d0380944f3ce3#commitcomment-66343609"
+      :require t
       :bind (:vertico-map ("C-l" . vertico-directory-up)))
     (leaf consult
       :url "https://github.com/minad/consult"
