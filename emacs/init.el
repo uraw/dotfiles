@@ -66,18 +66,6 @@
 
 (leaf major-modes
   :config
-  (leaf cc-mode
-    :doc "major mode for editing C and similar languages"
-    :defvar (c-basic-offset)
-    :hook
-    (c-mode-hook . '((c-set-style "bsd")
-                     (setq c-basic-offset 4)))
-    (c++-mode-hook . '((c-set-style "bsd")
-                       (setq c-basic-offset 4))))
-  (leaf go-mode
-    :doc "Major mode for the Go programming language"
-    :url "https://github.com/dominikh/go-mode.el"
-    :ensure t)
   (leaf markdown-mode
     :doc "Major mode for Markdown-formatted text"
     :url "https://jblevins.org/projects/markdown-mode/"
@@ -260,6 +248,18 @@
       :ensure t
       :hook (before-save-hook . py-isort-before-save))
     )
+  (leaf go-mode
+    :doc "Major mode for the Go programming language"
+    :url "https://github.com/dominikh/go-mode.el"
+    :ensure t)
+  (leaf cc-mode
+    :doc "major mode for editing C and similar languages"
+    :defvar (c-basic-offset)
+    :hook
+    (c-mode-hook . '((c-set-style "bsd")
+                     (setq c-basic-offset 4)))
+    (c++-mode-hook . '((c-set-style "bsd")
+                       (setq c-basic-offset 4))))
   (leaf syntax-check
     :config
     (leaf flycheck
