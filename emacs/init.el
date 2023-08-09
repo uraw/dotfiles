@@ -214,7 +214,22 @@
   )
 
 (leaf programing
-  (leaf lsp)
+  :config
+  (leaf lsp
+    :config
+    (leaf lsp-mode
+      :ensure t)
+    (leaf eglot
+      :ensure t
+      :hook
+      (python-mode-hook . eglot-ensure)
+      (c-mode-hook . eglot-ensure)
+      (c++-mode-hook . eglot-ensure))
+    (leaf lsp-ui
+      :ensure t)
+    (leaf consult-lsp
+      :ensure t)
+    )
   (leaf python
     :custom
     (python-indent-guess-indent-offset . nil)
