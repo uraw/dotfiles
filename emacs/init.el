@@ -411,7 +411,7 @@
     :doc "interface to spell checkers"
     :when (executable-find "aspell")
     :custom
-    (ispell-program-name . '(executable-find "aspell"))
+    (ispell-program-name . "aspell")
     (ispell-extra-args   . '("--sug-mode=ultra" "--lang=en_US" "--camel-case")))
   (leaf flyspell
     :doc "On-the-fly spell checker"
