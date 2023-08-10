@@ -133,13 +133,6 @@
     :config (exec-path-from-shell-initialize))
   (leaf suppress-cl-deprecated-message
     :custom (byte-compile-warnings '(not cl-functions obsolete)))
-  (leaf gcmh
-    :doc "the Garbage Collector Magic Hack"
-    :url "https://gitlab.com/koral/gcmh"
-    :ensure t
-    :blackout t
-    :custom (gcmh-verbose . t)
-    :config (gcmh-mode 1))
   (leaf savehist-mode
     :url "http://emacs.rubikitch.com/savehist/"
     :config (savehist-mode 1))
