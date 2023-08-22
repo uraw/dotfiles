@@ -264,10 +264,9 @@
     :doc "major mode for editing C and similar languages"
     :defvar (c-basic-offset)
     :hook
-    (c-mode-hook . '((c-set-style "bsd")
-                     (setq c-basic-offset 4)))
-    (c++-mode-hook . '((c-set-style "bsd")
-                       (setq c-basic-offset 4))))
+    ((c-mode-hook c++-mode-hook) . (lambda ()
+                                     (c-set-style "bsd")
+                                     (setq c-basic-offset 4))))
   (leaf syntax-check
     :config
     (leaf flycheck
