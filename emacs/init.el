@@ -73,19 +73,7 @@
     :bind ("C-c m" . markdown-mode)
     :custom
     (markdown-fontify-code-blocks-natively . t)  ;; enable syntax highlight in code block
-    :config
-    (custom-set-faces
-     '(hl-line ((t (:underline t))))
-     '(markdown-header-delimiter-face ((t (:inherit nil :foreground "color-161" :weight bold))))
-     '(markdown-header-face ((t (:inherit nil :background "color-242" :underline t :weight bold))))
-     '(markdown-header-face-1 ((t (:inherit nil :foreground "color-40" :weight bold :height 1.0))))
-     '(markdown-header-face-2 ((t (:inherit nil :foreground "color-33" :height 1.0))))
-     '(markdown-header-face-3 ((t (:foreground "color-178" :height 1.0))))
-     '(markdown-header-face-4 ((t (:foreground "color-105" :height 1.0))))
-     '(markdown-header-face-5 ((t (:foreground "color-219" :weight bold :height 1.0))))
-     '(markdown-header-face-6 ((t (:foreground "color-244" :weight bold))))
-     '(markdown-list-face ((t (:foreground "color-135"))))
-     ))
+    )
   (leaf yaml-mode
     :doc "Major mode for editing YAML files"
     :url "https://github.com/yoshiki/yaml-mode"
